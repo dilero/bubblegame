@@ -38,7 +38,7 @@ public class Constants {
 	public static final Vector2 BUBBLE_JUMP_LINEAR_IMPULSE = new Vector2(
 			BUBBLE_X, SHOOTER_WIDTH);
 	public static  final float BUBBLE_DENSITY = 0.5f;
-	public static final float BUBBLE_GRAVITY_SCALE = 3f;
+	public static final float BUBBLE_GRAVITY_SCALE = 40f;
 	
 	public static final Vector2 BEAM_VELOCITY = new Vector2(
 			0, 100);

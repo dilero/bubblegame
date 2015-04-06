@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bubble.actors.Shooter;
@@ -62,19 +63,22 @@ public class GameObjectFactory {
        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(new Vector2(Constants.BUBBLE_X, Constants.BUBBLE_Y));
         bodyDef.gravityScale = Constants.BUBBLE_GRAVITY_SCALE;
+        
         Vector2 initVelocity = new Vector2((Constants.BUBBLE_X-2*radius), Constants.FLOOR_Y).sub(new Vector2(Constants.BUBBLE_X, Constants.BUBBLE_Y));
+        initVelocity = initVelocity.scl(1f);
         bodyDef.linearVelocity.set(initVelocity);
+        
         CircleShape shape = new CircleShape();
         shape.setRadius(radius);
         Body body = world.createBody(bodyDef);
-        body.createFixture(shape, Constants.BUBBLE_DENSITY);
+//        body.createFixture(shape, Constants.BUBBLE_DENSITY);
         
-//        FixtureDef fixtureDef = new FixtureDef();  
-//        fixtureDef.shape = shape;  
-//        fixtureDef.density = 1.0f;  
-//        fixtureDef.friction = 0.0f;  
-//        fixtureDef.restitution = 1;  
-//        body.createFixture(fixtureDef);  
+        FixtureDef fixtureDef = new FixtureDef();  
+        fixtureDef.shape = shape;  
+        fixtureDef.density = 1.0f;  
+        fixtureDef.friction = 0.0f;  
+        fixtureDef.restitution = 1;  
+        body.createFixture(fixtureDef);  
         
         body.resetMassData();
         shape.dispose();

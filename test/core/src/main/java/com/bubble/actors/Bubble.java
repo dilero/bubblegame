@@ -38,13 +38,6 @@ public class Bubble extends GameActor
 	
 	@Override
 	public void act(float delta) {
-		float bubbleY = body.getPosition().y;
-		float bubbleX = body.getPosition().x;
-		
-		if(bubbleY >= (Constants.SHOOTER_Y+radius *4)) {
-			Vector2 curVelocity = body.getLinearVelocity();
-			body.setLinearVelocity(curVelocity.x, -curVelocity.y);
-		} 
 		
 		if(!bodyInBounds().equals(BoundEnum.INBOUND)) {
 			Vector2 curVelocity = body.getLinearVelocity();

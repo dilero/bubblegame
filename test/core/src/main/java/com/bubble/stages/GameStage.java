@@ -252,13 +252,7 @@ public class GameStage extends Stage implements ContactListener {
 		Body a = contact.getFixtureA().getBody();
 		Body b = contact.getFixtureB().getBody();
 
-		if ((BodyUtils.bodyIsFloor(a) && BodyUtils.bodyIsBubble(b))) {
-			Bubble bubble = (Bubble) b.getUserData();
-			bubble.jump();
-		} else if (BodyUtils.bodyIsBubble(a) && BodyUtils.bodyIsFloor(b)) {
-			Bubble bubble = (Bubble) a.getUserData();
-			bubble.jump();
-		} else if ((BodyUtils.bodyIsShooter(a) && BodyUtils.bodyIsBubble(b) || (BodyUtils
+		if ((BodyUtils.bodyIsShooter(a) && BodyUtils.bodyIsBubble(b) || (BodyUtils
 				.bodyIsBubble(a) && BodyUtils.bodyIsShooter(b)))) {
 			shooterHitByBall();
 		} else if (BodyUtils.bodyIsBeam(a) && BodyUtils.bodyIsBubble(b)) {
