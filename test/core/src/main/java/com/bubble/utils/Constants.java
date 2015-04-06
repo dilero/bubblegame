@@ -48,4 +48,6 @@ public class Constants {
 	public static final float BEAM_GRAVITY_SCALE = 0f;
 	
 	public static final short INIT_HEALTH = 3;
+	public static final short BUBBLE_GENERAL_SHOT_SCORE = 100;
+	
 }

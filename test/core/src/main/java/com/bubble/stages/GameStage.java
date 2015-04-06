@@ -155,7 +155,7 @@ public class GameStage extends Stage implements ContactListener {
 
 	private void bubbleShotByBeam(Bubble bubble) {
 		Gdx.app.log("Info", " bubble shot \n");
-		updateScoreBubbleShot();
+		updateScoreBubbleShot(bubble);
 		animateBubbleShot();
 
 		if (bubble.isFirstBubble()) {
@@ -185,8 +185,8 @@ public class GameStage extends Stage implements ContactListener {
 		// TODO
 	}
 
-	private void updateScoreBubbleShot() {
-		// TODO
+	private void updateScoreBubbleShot(Bubble bubble) {
+		this.score=+bubble.getshotScore();
 	}
 
 	private void shooterHitByBall() {

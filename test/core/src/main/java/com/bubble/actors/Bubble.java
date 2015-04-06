@@ -50,4 +50,11 @@ public class Bubble extends GameActor
 	public boolean isFirstBubble() {
 		return radius == Constants.BUBBLE_FIRST_RADIUS;
 	}
+	
+	//inverse proportion to radius
+	public int getshotScore(){
+		return (int) (Constants.BUBBLE_GENERAL_SHOT_SCORE/radius);
+	}
+	
+	
 }
