@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.badlogic.gdx.physics.box2d.World;
-import com.bubble.utils.WorldUtils;
+import com.bubble.utils.GameObjectFactory;
 
 public class ShooterTest {
 	World world;
@@ -14,7 +14,7 @@ public class ShooterTest {
 
 	@Before
 	public void init() {
-		world = WorldUtils.createWorld();
+		world = GameObjectFactory.getInstance().createWorld();
 		shooter = new Shooter(world);
 	}
 

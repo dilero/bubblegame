@@ -4,7 +4,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.bubble.enums.BoundEnum;
 import com.bubble.utils.BodyUtils;
 import com.bubble.utils.Constants;
-import com.bubble.utils.WorldUtils;
+import com.bubble.utils.GameObjectFactory;
 
 public class Shooter extends GameActor {
 
@@ -14,7 +14,7 @@ public class Shooter extends GameActor {
 
 	public Shooter(World world) {
 		super(world);
-		body = WorldUtils.createShooter(world);
+		body = GameObjectFactory.getInstance().createShooter(world);
 		body.setUserData(this);
 	}
 

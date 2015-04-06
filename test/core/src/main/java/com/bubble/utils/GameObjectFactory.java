@@ -8,27 +8,27 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bubble.actors.Shooter;
 
-public class WorldUtils {
-	private static WorldUtils instance;
+public class GameObjectFactory {
+	private static GameObjectFactory instance;
 	
-	 private WorldUtils(){}
+	 private GameObjectFactory(){}
 	
-	 public static WorldUtils getInstanceUsingDoubleLocking(){
+	 public static GameObjectFactory getInstance(){
 		    if(instance == null){
-		        synchronized (WorldUtils.class) {
+		        synchronized (GameObjectFactory.class) {
 		            if(instance == null){
-		                instance = new WorldUtils();
+		                instance = new GameObjectFactory();
 		            }
 		        }
 		    }
 		    return instance;
 		}
 	
-    public static World createWorld() {
+    public World createWorld() {
         return new World(Constants.WORLD_GRAVITY, true);
     }
 
-    public static Body createFloor(World world) {
+    public Body createFloor(World world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(new Vector2(Constants.FLOOR_X, Constants.FLOOR_Y));
         Body body = world.createBody(bodyDef);
@@ -41,7 +41,7 @@ public class WorldUtils {
 
     }
     
-    public static Body createShooter(World world) {
+    public Body createShooter(World world) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(new Vector2(Constants.SHOOTER_X, Constants.SHOOTER_Y));
@@ -57,7 +57,7 @@ public class WorldUtils {
         return body;
     }
     
-    public static Body createBubble(World world, float radius) {
+    public Body createBubble(World world, float radius) {
         BodyDef bodyDef = new BodyDef();
        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(new Vector2(Constants.BUBBLE_X, Constants.BUBBLE_Y));
@@ -83,7 +83,7 @@ public class WorldUtils {
         return body;
     }
     
-    public static Body createBeam(World world, Shooter shooter) {
+    public Body createBeam(World world, Shooter shooter) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(shooter.getPosition().add(0f, Constants.SHOOTER_HEIGHT/2));

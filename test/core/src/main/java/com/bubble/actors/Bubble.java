@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bubble.enums.BoundEnum;
 import com.bubble.utils.Constants;
-import com.bubble.utils.WorldUtils;
+import com.bubble.utils.GameObjectFactory;
 
 public class Bubble extends GameActor
 {
@@ -12,7 +12,7 @@ public class Bubble extends GameActor
 
 	public Bubble(World world, float rad) {
 		super(world);
-		body = WorldUtils.createBubble(world, rad);
+		body = GameObjectFactory.getInstance().createBubble(world, rad);
 		radius =rad;
 		body.setUserData(this);
 	}

@@ -21,7 +21,7 @@ import com.bubble.actors.Shooter;
 
 import com.bubble.utils.BodyUtils;
 import com.bubble.utils.Constants;
-import com.bubble.utils.WorldUtils;
+import com.bubble.utils.GameObjectFactory;
 
 public class GameStage extends Stage implements ContactListener {
 	private World world;
@@ -112,7 +112,7 @@ public class GameStage extends Stage implements ContactListener {
 	}
 
 	private void setUpWorld() {
-		world = WorldUtils.createWorld();
+		world = GameObjectFactory.getInstance().createWorld();
 		// Let the world now you are handling contacts
 		world.setContactListener(this);
 		setUpFloor();
