@@ -50,4 +50,5 @@ public class Constants {
 	public static final short INIT_HEALTH = 3;
 	public static final short BUBBLE_GENERAL_SHOT_SCORE = 100;
 	
+	public static final String BACKGROUND_IMAGE_PATH = "background.jpg";
 }

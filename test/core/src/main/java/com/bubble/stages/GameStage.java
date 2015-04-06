@@ -14,11 +14,12 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.bubble.actors.Background;
 import com.bubble.actors.Beam;
 import com.bubble.actors.Bubble;
 import com.bubble.actors.Floor;
 import com.bubble.actors.Shooter;
-
 import com.bubble.utils.BodyUtils;
 import com.bubble.utils.Constants;
 import com.bubble.utils.GameObjectFactory;
@@ -47,6 +48,9 @@ public class GameStage extends Stage implements ContactListener {
 	private Vector3 touchPoint;
 
 	public GameStage() {
+		super(new FitViewport( Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT,
+                new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT)));
+        
 		bubbles = new ArrayList<Bubble>();
 		setUpWorld();
 		setupCamera();
@@ -111,10 +115,15 @@ public class GameStage extends Stage implements ContactListener {
 		getCamera().unproject(touchPoint.set(x, y, 0));
 	}
 
+	private void setUpBackground() {
+		addActor(new Background());
+	}
+	
 	private void setUpWorld() {
 		world = GameObjectFactory.getInstance().createWorld();
 		// Let the world now you are handling contacts
 		world.setContactListener(this);
+		setUpBackground();
 		setUpFloor();
 		setUpShooter();
 		setUpBubbles();
