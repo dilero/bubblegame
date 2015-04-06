@@ -1,5 +1,7 @@
 package com.bubble.stages;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
@@ -12,9 +14,11 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.bubble.actors.Beam;
 import com.bubble.actors.Bubble;
 import com.bubble.actors.Floor;
 import com.bubble.actors.Shooter;
+
 import com.bubble.utils.BodyUtils;
 import com.bubble.utils.Constants;
 import com.bubble.utils.WorldUtils;
@@ -22,9 +26,15 @@ import com.bubble.utils.WorldUtils;
 public class GameStage extends Stage implements ContactListener {
 	private World world;
 	private Floor floor;
+	
 	private Shooter shooter;
-	private Bubble bubble;
-
+	private ArrayList<Bubble> bubbles;
+	private Beam beam;
+	
+	
+	private short healthLeft = Constants.INIT_HEALTH;
+	private int score = 0;
+	
 	private final float TIME_STEP = 1 / 300f;
 	private float accumulator = 0f;
 
@@ -38,6 +48,7 @@ public class GameStage extends Stage implements ContactListener {
 	private Vector3 touchPoint;
 
 	public GameStage() {
+		bubbles = new ArrayList<Bubble>();
 		setUpWorld();
 		setupCamera();
 		setupTouchControlAreas();
@@ -55,6 +66,7 @@ public class GameStage extends Stage implements ContactListener {
 		Gdx.input.setInputProcessor(this);
 	}
 
+	
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 
@@ -66,7 +78,7 @@ public class GameStage extends Stage implements ContactListener {
 		} else if (leftSideTouched(touchPoint.x, touchPoint.y)) {
 			shooter.setLeftMove(true);
 		} else if (upSideTouched(touchPoint.x, touchPoint.y)) {
-			shooter.shot();
+				shootBeam();
 		}
 
 		return super.touchDown(x, y, pointer, button);
@@ -107,21 +119,22 @@ public class GameStage extends Stage implements ContactListener {
 		world.setContactListener(this);
 		setUpFloor();
 		setUpShooter();
-		setUpBubble();
+		setUpBubbles();
 	}
 
-	private void setUpBubble() {
-		// TODO Auto-generated method stub
-
+	private void setUpBubbles() {
+		Bubble bubble = new Bubble(world, Constants.BUBBLE_FIRST_RADIUS);
+		bubbles.add(bubble);
+		addActor(bubble);
 	}
 
 	private void setUpFloor() {
-		floor = new Floor(WorldUtils.createFloor(world));
+		floor = new Floor(world);
 		addActor(floor);
 	}
 
 	private void setUpShooter() {
-		shooter = new Shooter(WorldUtils.createShooter(world));
+		shooter = new Shooter(world);
 		addActor(shooter);
 	}
 
@@ -132,7 +145,88 @@ public class GameStage extends Stage implements ContactListener {
 				camera.viewportHeight / 2, 0f);
 		camera.update();
 	}
+	
+	private void shootBeam() {
+		if(beam == null){
+			beam = new Beam(world, shooter);
+			addActor(beam);
+	    } else {
+	    	
+	    }
+	}
+	
+	private void bubbleShotByBeam(Bubble bubble) {
+		Gdx.app.log("Info", " bubble shot \n");
+		updateScoreBubbleShot();
+		animateBubbleShot();
+		
+		if(bubble.isBigBubble()) {
+			createSmallBubbles();
+		}
+		
+		inactivateBeam();
+		destroyBubble(bubble);
+		
+	}
+	
+	private void destroyBubble(Bubble bubble) {
+		// TODO
+		
+	}
+	
+	private void inactivateBeam() {
+		//TODO
+		Gdx.app.log("Info", " beam inactivated \n");
+	}
 
+	private void createSmallBubbles() {
+		// TODO Auto-generated method stub
+	}
+
+	private void animateBubbleShot() {
+		//TODO
+	}
+	
+	private void updateScoreBubbleShot() {
+		//TODO
+	}
+	
+	private void shooterHitByBall() {
+		animateLoseHealth();
+		
+		boolean healthLeft = decreaseHealth();
+		if(healthLeft) {
+			setupNewTry();
+		} else {
+			animateGameover();
+		}
+	}
+	
+	private void animateLoseHealth(){
+		//TODO
+	}
+	
+	private boolean decreaseHealth() {
+		healthLeft--;
+		
+		decreaseHealthGUI();
+		
+		return healthLeft>0 ? true : false;
+	}
+	
+	private void decreaseHealthGUI() {
+		//TODO
+	}
+	
+	
+	private void animateGameover() {
+		//TODO
+	}
+	
+	private void setupNewTry() {
+		//TODO
+	}
+	
 	@Override
 	public void act(float delta) {
 		super.act(delta);
@@ -160,14 +254,38 @@ public class GameStage extends Stage implements ContactListener {
 
 		Body a = contact.getFixtureA().getBody();
 		Body b = contact.getFixtureB().getBody();
+		
+		if ((BodyUtils.bodyIsFloor(a) && BodyUtils.bodyIsBubble(b))
+				|| (BodyUtils.bodyIsBubble(a) && BodyUtils.bodyIsFloor(b))) {
+			// bubble hit the floor 
+			int bubbleID = BodyUtils.findBubbleID(a, b); 
 
-		// if ((BodyUtils.bodyIsShooter(a) && BodyUtils.bodyIsFloor(b)) ||
-		// (BodyUtils.bodyIsFloor(a) && BodyUtils.bodyIsShooter(b))) {
-		// shooter.landed();
-		// }
+			for(Bubble bubble: bubbles) {
+				if(bubble.compareID(bubbleID)) {
+					bubble.jump();
+					break;
+				}
+			}
+			
+		} else if((BodyUtils.bodyIsShooter(a) && BodyUtils.bodyIsBubble(b) || 
+				(BodyUtils.bodyIsBubble(a) && BodyUtils.bodyIsShooter(b)))) {
+			shooterHitByBall();
+		} else if((BodyUtils.bodyIsBeam(a) && BodyUtils.bodyIsBubble(b) || 
+				(BodyUtils.bodyIsBubble(a) && BodyUtils.bodyIsBeam(b)))) {
+			
+			int bubbleID = BodyUtils.findBubbleID(a, b);
+			
+			for(Bubble bubble: bubbles) {
+				if(bubble.compareID(bubbleID)) {
+					bubbleShotByBeam(bubble);
+				}
+				break;
+			}
+
+		}
 
 	}
-
+	
 	@Override
 	public void endContact(Contact contact) {
 

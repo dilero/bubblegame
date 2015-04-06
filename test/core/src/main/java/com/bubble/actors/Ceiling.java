@@ -1,17 +1,12 @@
 package com.bubble.actors;
 
-import com.badlogic.gdx.physics.box2d.Body;
-import com.bubble.box2d.CeilingUserData;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class Ceiling extends GameActor {
 
-	public Ceiling(Body body) {
-		super(body);
-		// TODO Auto-generated constructor stub
+	public Ceiling(World world) {
+		super(world);
+		
 	}
-    @Override
-    public CeilingUserData getUserData() {
-        return (CeilingUserData) userData;
-    }
 
 }

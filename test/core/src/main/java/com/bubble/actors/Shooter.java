@@ -1,11 +1,10 @@
 package com.bubble.actors;
 
-import com.badlogic.gdx.graphics.g3d.particles.influencers.DynamicsModifier.Angular;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.bubble.box2d.ShooterUserData;
+import com.badlogic.gdx.physics.box2d.World;
 import com.bubble.enums.BoundEnum;
 import com.bubble.utils.BodyUtils;
 import com.bubble.utils.Constants;
+import com.bubble.utils.WorldUtils;
 
 public class Shooter extends GameActor {
 
@@ -13,25 +12,12 @@ public class Shooter extends GameActor {
 	private boolean leftMove = false;
 	private boolean rightMove = false;
 
-	public Shooter(Body body) {
-		super(body);
+	public Shooter(World world) {
+		super(world);
+		body = WorldUtils.createShooter(world);
+		body.setUserData(this);
 	}
 
-	@Override
-	public ShooterUserData getUserData() {
-		return (ShooterUserData) userData;
-	}
-
-	public void shot() {
-
-		// if (!shotting) {
-		// body.applyLinearImpulse(getUserData().getShotLinearImpulse(),
-		// body.getWorldCenter(), true);
-		// shotting = true;
-		// }
-		System.out.println("Shot");
-
-	}
 
 	public void moveRight(float delta) {
 		if (!BoundEnum.RIGTBOUND.equals(BodyUtils.bodyInBounds(body))) {
@@ -50,11 +36,6 @@ public class Shooter extends GameActor {
 					body.getPosition().y, 0);
 		}
 	}
-
-	// public void stop() {
-	// System.out.println("stop");
-	// body.setLinearVelocity(0, 0);
-	// }
 
 	@Override
 	public void act(float delta) {

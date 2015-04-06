@@ -15,7 +15,7 @@ public class ShooterTest {
 	@Before
 	public void init() {
 		world = WorldUtils.createWorld();
-		shooter = new Shooter(WorldUtils.createShooter(world));
+		shooter = new Shooter(world);
 	}
 
 	@Test
