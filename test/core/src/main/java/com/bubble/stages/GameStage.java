@@ -26,15 +26,14 @@ import com.bubble.utils.WorldUtils;
 public class GameStage extends Stage implements ContactListener {
 	private World world;
 	private Floor floor;
-	
+
 	private Shooter shooter;
 	private ArrayList<Bubble> bubbles;
 	private Beam beam;
-	
-	
+
 	private short healthLeft = Constants.INIT_HEALTH;
 	private int score = 0;
-	
+
 	private final float TIME_STEP = 1 / 300f;
 	private float accumulator = 0f;
 
@@ -66,7 +65,6 @@ public class GameStage extends Stage implements ContactListener {
 		Gdx.input.setInputProcessor(this);
 	}
 
-	
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 
@@ -78,7 +76,7 @@ public class GameStage extends Stage implements ContactListener {
 		} else if (leftSideTouched(touchPoint.x, touchPoint.y)) {
 			shooter.setLeftMove(true);
 		} else if (upSideTouched(touchPoint.x, touchPoint.y)) {
-				shootBeam();
+			shootBeam();
 		}
 
 		return super.touchDown(x, y, pointer, button);
@@ -145,37 +143,37 @@ public class GameStage extends Stage implements ContactListener {
 				camera.viewportHeight / 2, 0f);
 		camera.update();
 	}
-	
+
 	private void shootBeam() {
-		if(beam == null){
+		if (beam == null) {
 			beam = new Beam(world, shooter);
 			addActor(beam);
-	    } else {
-	    	
-	    }
+		} else {
+
+		}
 	}
-	
+
 	private void bubbleShotByBeam(Bubble bubble) {
 		Gdx.app.log("Info", " bubble shot \n");
 		updateScoreBubbleShot();
 		animateBubbleShot();
-		
-		if(bubble.isBigBubble()) {
+
+		if (bubble.isFirstBubble()) {
 			createSmallBubbles();
 		}
-		
+
 		inactivateBeam();
 		destroyBubble(bubble);
-		
+
 	}
-	
+
 	private void destroyBubble(Bubble bubble) {
 		// TODO
-		
+
 	}
-	
+
 	private void inactivateBeam() {
-		//TODO
+		// TODO
 		Gdx.app.log("Info", " beam inactivated \n");
 	}
 
@@ -184,49 +182,48 @@ public class GameStage extends Stage implements ContactListener {
 	}
 
 	private void animateBubbleShot() {
-		//TODO
+		// TODO
 	}
-	
+
 	private void updateScoreBubbleShot() {
-		//TODO
+		// TODO
 	}
-	
+
 	private void shooterHitByBall() {
 		animateLoseHealth();
-		
+
 		boolean healthLeft = decreaseHealth();
-		if(healthLeft) {
+		if (healthLeft) {
 			setupNewTry();
 		} else {
 			animateGameover();
 		}
 	}
-	
-	private void animateLoseHealth(){
-		//TODO
+
+	private void animateLoseHealth() {
+		// TODO
 	}
-	
+
 	private boolean decreaseHealth() {
 		healthLeft--;
-		
+
 		decreaseHealthGUI();
-		
-		return healthLeft>0 ? true : false;
+
+		return healthLeft > 0 ? true : false;
 	}
-	
+
 	private void decreaseHealthGUI() {
-		//TODO
+		// TODO
 	}
-	
-	
+
 	private void animateGameover() {
-		//TODO
+		// TODO
 	}
-	
+
 	private void setupNewTry() {
-		//TODO
+		// TODO
 	}
-	
+
 	@Override
 	public void act(float delta) {
 		super.act(delta);
@@ -254,38 +251,26 @@ public class GameStage extends Stage implements ContactListener {
 
 		Body a = contact.getFixtureA().getBody();
 		Body b = contact.getFixtureB().getBody();
-		
-		if ((BodyUtils.bodyIsFloor(a) && BodyUtils.bodyIsBubble(b))
-				|| (BodyUtils.bodyIsBubble(a) && BodyUtils.bodyIsFloor(b))) {
-			// bubble hit the floor 
-			int bubbleID = BodyUtils.findBubbleID(a, b); 
 
-			for(Bubble bubble: bubbles) {
-				if(bubble.compareID(bubbleID)) {
-					bubble.jump();
-					break;
-				}
-			}
-			
-		} else if((BodyUtils.bodyIsShooter(a) && BodyUtils.bodyIsBubble(b) || 
-				(BodyUtils.bodyIsBubble(a) && BodyUtils.bodyIsShooter(b)))) {
+		if ((BodyUtils.bodyIsFloor(a) && BodyUtils.bodyIsBubble(b))) {
+			Bubble bubble = (Bubble) b.getUserData();
+			bubble.jump();
+		} else if (BodyUtils.bodyIsBubble(a) && BodyUtils.bodyIsFloor(b)) {
+			Bubble bubble = (Bubble) a.getUserData();
+			bubble.jump();
+		} else if ((BodyUtils.bodyIsShooter(a) && BodyUtils.bodyIsBubble(b) || (BodyUtils
+				.bodyIsBubble(a) && BodyUtils.bodyIsShooter(b)))) {
 			shooterHitByBall();
-		} else if((BodyUtils.bodyIsBeam(a) && BodyUtils.bodyIsBubble(b) || 
-				(BodyUtils.bodyIsBubble(a) && BodyUtils.bodyIsBeam(b)))) {
-			
-			int bubbleID = BodyUtils.findBubbleID(a, b);
-			
-			for(Bubble bubble: bubbles) {
-				if(bubble.compareID(bubbleID)) {
-					bubbleShotByBeam(bubble);
-				}
-				break;
-			}
-
+		} else if (BodyUtils.bodyIsBeam(a) && BodyUtils.bodyIsBubble(b)) {
+			Bubble bubble = (Bubble) b.getUserData();
+			bubbleShotByBeam(bubble);
+		} else if (BodyUtils.bodyIsBubble(a) && BodyUtils.bodyIsBeam(b)) {
+			Bubble bubble = (Bubble) a.getUserData();
+			bubbleShotByBeam(bubble);
 		}
 
 	}
-	
+
 	@Override
 	public void endContact(Contact contact) {
 

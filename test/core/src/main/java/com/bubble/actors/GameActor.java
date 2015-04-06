@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.bubble.enums.BoundEnum;
 
 public abstract class GameActor extends Actor {
 	static int latestID = 0;
@@ -38,6 +39,10 @@ public abstract class GameActor extends Actor {
    
    public int getID() {
    	return id;
+   }
+   
+   public BoundEnum bodyInBounds(){
+	   return BoundEnum.INBOUND;
    }
    
 }

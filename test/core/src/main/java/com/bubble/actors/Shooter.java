@@ -18,9 +18,8 @@ public class Shooter extends GameActor {
 		body.setUserData(this);
 	}
 
-
 	public void moveRight(float delta) {
-		if (!BoundEnum.RIGTBOUND.equals(BodyUtils.bodyInBounds(body))) {
+		if (!BoundEnum.RIGTBOUND.equals(bodyInBounds())) {
 			System.out.println("moveRight");
 			body.setTransform(
 					(body.getPosition().x + (delta * Constants.SHOOTER_STEP_SIZE)),
@@ -29,7 +28,7 @@ public class Shooter extends GameActor {
 	}
 
 	public void moveLeft(float delta) {
-		if (!BoundEnum.LEFTBOUND.equals(BodyUtils.bodyInBounds(body))) {
+		if (!BoundEnum.LEFTBOUND.equals(bodyInBounds())) {
 			System.out.println("moveLeft");
 			body.setTransform(
 					(body.getPosition().x - (delta * Constants.SHOOTER_STEP_SIZE)),
@@ -46,6 +45,16 @@ public class Shooter extends GameActor {
 			moveRight(delta);
 		}
 		super.act(delta);
+	}
+
+	@Override
+	public BoundEnum bodyInBounds() {
+		if (body.getPosition().x - Constants.SHOOTER_WIDTH / 2 < 0)
+			return BoundEnum.LEFTBOUND;
+		else if (body.getPosition().x + Constants.SHOOTER_WIDTH / 2 > Constants.APP_WIDTH)
+			return BoundEnum.RIGTBOUND;
+		else
+			return BoundEnum.INBOUND;
 	}
 
 	public boolean isShotting() {

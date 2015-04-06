@@ -2,6 +2,7 @@ package com.bubble.actors;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.bubble.enums.BoundEnum;
 import com.bubble.utils.Constants;
 import com.bubble.utils.WorldUtils;
 
@@ -24,6 +25,15 @@ public class Bubble extends GameActor
 		body.setLinearVelocity(curVelocity.x, -curVelocity.y);
 
 	}
+	@Override
+	public BoundEnum bodyInBounds() {
+		if (body.getPosition().x - radius < 0)
+			return BoundEnum.LEFTBOUND;
+		else if (body.getPosition().x + radius> Constants.APP_WIDTH)
+			return BoundEnum.RIGTBOUND;
+		else
+			return BoundEnum.INBOUND;
+	}
 
 	
 	@Override
@@ -36,7 +46,7 @@ public class Bubble extends GameActor
 			body.setLinearVelocity(curVelocity.x, -curVelocity.y);
 		} 
 		
-		if(bubbleX+radius >= (Constants.APP_WIDTH) || bubbleX <= radius) {
+		if(!bodyInBounds().equals(BoundEnum.INBOUND)) {
 			Vector2 curVelocity = body.getLinearVelocity();
 			body.setLinearVelocity(-curVelocity.x, curVelocity.y);
 		}
@@ -44,7 +54,7 @@ public class Bubble extends GameActor
 		super.act(delta);
 	}
 	
-	public boolean isBigBubble() {
+	public boolean isFirstBubble() {
 		return radius == Constants.BUBBLE_FIRST_RADIUS;
 	}
 }
