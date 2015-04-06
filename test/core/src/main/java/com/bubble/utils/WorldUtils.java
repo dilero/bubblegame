@@ -9,7 +9,21 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.bubble.actors.Shooter;
 
 public class WorldUtils {
-
+	private static WorldUtils instance;
+	
+	 private WorldUtils(){}
+	
+	 public static WorldUtils getInstanceUsingDoubleLocking(){
+		    if(instance == null){
+		        synchronized (WorldUtils.class) {
+		            if(instance == null){
+		                instance = new WorldUtils();
+		            }
+		        }
+		    }
+		    return instance;
+		}
+	
     public static World createWorld() {
         return new World(Constants.WORLD_GRAVITY, true);
     }
