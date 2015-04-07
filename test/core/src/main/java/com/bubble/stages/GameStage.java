@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bubble.actors.Background;
 import com.bubble.actors.Beam;
@@ -241,20 +242,20 @@ public class GameStage extends Stage implements ContactListener {
 	}
 
 	private void setupNewTry() {
-		// TODO
+		shooter.setGoToInitScheduled(true);
 	}
 
 	@Override
 	public void act(float delta) {
 		super.act(delta);
 
-		// Fixed timestep
-		accumulator += delta;
+        // Fixed timestep
+        accumulator += delta;
 
-		while (accumulator >= delta) {
-			world.step(TIME_STEP, 6, 2);
-			accumulator -= TIME_STEP;
-		}
+        while (accumulator >= delta) {
+            world.step(TIME_STEP, 6, 2);
+            accumulator -= TIME_STEP;
+        }
 
 		// TODO: Implement interpolation
 

@@ -3,7 +3,6 @@ package com.bubble.actors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bubble.enums.BoundEnum;
@@ -13,7 +12,9 @@ import com.bubble.utils.MathUtils;
 
 public class Shooter extends GameActor {
 
-	private boolean shotting;
+	private boolean goToInitScheduled =false;
+	private boolean shooting = false;
+	private boolean moving = false;
 	private boolean leftMove = false;
 	private boolean rightMove = false;
 	private static Texture texture = new Texture(
@@ -52,6 +53,12 @@ public class Shooter extends GameActor {
 			body.setTransform(newX, positionY, 0);
 		}
 	}
+	
+	public void goInitPosition() {
+		body.setTransform(Constants.SHOOTER_X, Constants.SHOOTER_Y, 0);
+		body.setAngularVelocity(0);
+		body.setLinearVelocity(0, 0);
+	}
 
 	@Override
 	public void act(float delta) {
@@ -60,6 +67,11 @@ public class Shooter extends GameActor {
 		}
 		if (rightMove) {
 			moveRight(delta);
+		}
+		
+		if(goToInitScheduled) {
+			goInitPosition();
+			goToInitScheduled = false;
 		}
 		super.act(delta);
 	}
@@ -83,11 +95,11 @@ public class Shooter extends GameActor {
 	}
 
 	public boolean isShotting() {
-		return shotting;
+		return shooting;
 	}
 
-	public void setShotting(boolean shotting) {
-		this.shotting = shotting;
+	public void setShotting(boolean shooting) {
+		this.shooting = shooting;
 	}
 
 	public boolean isLeftMove() {
@@ -105,4 +117,21 @@ public class Shooter extends GameActor {
 	public void setRightMove(boolean rightMove) {
 		this.rightMove = rightMove;
 	}
+
+	public boolean isMoving() {
+		return moving;
+	}
+
+	public void setMoving(boolean moving) {
+		this.moving = moving;
+	}
+
+	public boolean isGoToInitScheduled() {
+		return goToInitScheduled;
+	}
+
+	public void setGoToInitScheduled(boolean goToInitScheduled) {
+		this.goToInitScheduled = goToInitScheduled;
+	}
+
 }
