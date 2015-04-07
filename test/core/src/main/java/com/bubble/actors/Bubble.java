@@ -76,6 +76,7 @@ public class Bubble extends GameActor {
 
 	@Override
 	public void activate() {
+		super.activate();
 		body = GameObjectFactory.getInstance().createBubble(world, radius);
 		body.setUserData(this);
 	}

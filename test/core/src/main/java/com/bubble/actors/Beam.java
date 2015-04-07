@@ -60,6 +60,7 @@ public class Beam extends GameActor {
 
 	@Override
 	public void activate() {
+		super.activate();
 		body = GameObjectFactory.getInstance().createBeam(world, shooter);
 		body.setUserData(this);
 		

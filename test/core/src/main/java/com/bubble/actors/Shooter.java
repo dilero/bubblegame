@@ -135,6 +135,7 @@ public class Shooter extends GameActor {
 
 	@Override
 	public void activate() {
+		super.activate();
 		body = GameObjectFactory.getInstance().createShooter(world);
 		body.setUserData(this);
 		

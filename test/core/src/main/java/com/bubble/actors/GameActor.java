@@ -54,8 +54,9 @@ public abstract class GameActor extends Actor {
 			setVisible(false);
 	}
 
-	public abstract void activate();
-
+	public void activate() {
+		setVisible(true);
+	}
 	public int getID() {
 		return id;
 	}

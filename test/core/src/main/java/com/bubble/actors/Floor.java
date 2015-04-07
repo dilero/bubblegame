@@ -31,6 +31,7 @@ public class Floor extends GameActor {
 	}
 	@Override
 	public void activate() {
+		super.activate();
 		body = GameObjectFactory.getInstance().createFloor(world);
 		body.setUserData(this);
 		
