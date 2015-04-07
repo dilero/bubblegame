@@ -12,7 +12,7 @@ import com.bubble.utils.MathUtils;
 
 public class Shooter extends GameActor {
 
-	private boolean goToInitScheduled =false;
+	private boolean goToInitScheduled = false;
 	private boolean shooting = false;
 	private boolean moving = false;
 	private boolean leftMove = false;
@@ -20,10 +20,9 @@ public class Shooter extends GameActor {
 	private static Texture texture = new Texture(
 			Gdx.files.internal(Constants.SHOOTER_IMAGE_PATH));
 
-
 	public Shooter(World world) {
-		super(world,texture);
-		activate();
+		super(world, texture);
+		activate(0, 0);
 		float leftCornerX = MathUtils.findLeftCornerX(Constants.SHOOTER_X,
 				Constants.SHOOTER_WIDTH);
 		float leftCornerY = MathUtils.findLeftCornerY(Constants.SHOOTER_Y,
@@ -39,7 +38,7 @@ public class Shooter extends GameActor {
 			float newX = positionX + lenght;
 			float positionY = body.getPosition().y;
 			body.setTransform(newX, positionY, 0);
-			
+
 		}
 	}
 
@@ -52,7 +51,7 @@ public class Shooter extends GameActor {
 			body.setTransform(newX, positionY, 0);
 		}
 	}
-	
+
 	public void goInitPosition() {
 		body.setTransform(Constants.SHOOTER_X, Constants.SHOOTER_Y, 0);
 		body.setAngularVelocity(0);
@@ -67,8 +66,8 @@ public class Shooter extends GameActor {
 		if (rightMove) {
 			moveRight(delta);
 		}
-		
-		if(goToInitScheduled) {
+
+		if (goToInitScheduled) {
 			goInitPosition();
 			goToInitScheduled = false;
 		}
@@ -87,7 +86,8 @@ public class Shooter extends GameActor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		textureRegionBounds.setX(MathUtils.findLeftCornerX(body.getPosition().x, Constants.SHOOTER_WIDTH));
+		textureRegionBounds.setX(MathUtils.findLeftCornerX(
+				body.getPosition().x, Constants.SHOOTER_WIDTH));
 		super.draw(batch, parentAlpha);
 		batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y,
 				Constants.SHOOTER_WIDTH, Constants.SHOOTER_HEIGHT);
@@ -134,11 +134,11 @@ public class Shooter extends GameActor {
 	}
 
 	@Override
-	public void activate() {
-		super.activate();
+	public void activate(float x, float y) {
+		super.activate(x, y);
 		body = GameObjectFactory.getInstance().createShooter(world);
 		body.setUserData(this);
-		
+
 	}
 
 }

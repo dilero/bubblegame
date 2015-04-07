@@ -16,19 +16,15 @@ public class Bubble extends GameActor {
 	private static Texture texture = new Texture(
 			Gdx.files.internal(Constants.RED_BUBBLE_IMAGE_PATH));
 
-	public Bubble(World world, float rad) {
+	public Bubble(World world, float rad, float x, float y) {
 		super(world, texture);
 		radius = rad;
-		activate();
-		float leftCornerX = MathUtils.findLeftCornerX(Constants.BUBBLE_X,
-				Constants.BUBBLE_FIRST_RADIUS*2);
-		float leftCornerY = MathUtils.findLeftCornerY(Constants.BUBBLE_Y,
-				Constants.BUBBLE_FIRST_RADIUS*2);
+		activate(x, y);
+		float leftCornerX = MathUtils.findLeftCornerX(x, radius * 2);
+		float leftCornerY = MathUtils.findLeftCornerY(y, radius * 2);
 		textureRegionBounds = new Rectangle(leftCornerX, leftCornerY,
-				Constants.BUBBLE_FIRST_RADIUS * 2,
-				Constants.BUBBLE_FIRST_RADIUS * 2);
+				radius * 2, radius * 2);
 	}
-
 
 	@Override
 	public BoundEnum bodyInBounds() {
@@ -63,22 +59,29 @@ public class Bubble extends GameActor {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		float leftCornerX = MathUtils.findLeftCornerX(body.getPosition().x,
-				Constants.BUBBLE_FIRST_RADIUS*2);
+				radius * 2);
 		float leftCornerY = MathUtils.findLeftCornerY(body.getPosition().y,
-				Constants.BUBBLE_FIRST_RADIUS*2);
+				radius * 2);
 		textureRegionBounds.setX(leftCornerX);
 		textureRegionBounds.setY(leftCornerY);
 		batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y,
-				Constants.BUBBLE_FIRST_RADIUS * 2,
-				Constants.BUBBLE_FIRST_RADIUS * 2);
+				radius * 2, radius * 2);
 	}
 
-
 	@Override
-	public void activate() {
-		super.activate();
-		body = GameObjectFactory.getInstance().createBubble(world, radius);
+	public void activate(float x, float y) {
+		super.activate(x, y);
+		body = GameObjectFactory.getInstance()
+				.createBubble(world, radius, x, y);
 		body.setUserData(this);
+	}
+
+	public float getRadius() {
+		return radius;
+	}
+
+	public void setRadius(float radius) {
+		this.radius = radius;
 	}
 
 }

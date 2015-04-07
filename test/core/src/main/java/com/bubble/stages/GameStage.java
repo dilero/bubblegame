@@ -35,7 +35,7 @@ public class GameStage extends Stage implements ContactListener {
 	private ArrayList<Bubble> bubbles;
 	private Beam beam;
 
-	private short healthLeft = Constants.INIT_HEALTH-1;
+	private short healthLeft = Constants.INIT_HEALTH - 1;
 	private int score = 0;
 
 	private final float TIME_STEP = 1 / 300f;
@@ -118,13 +118,13 @@ public class GameStage extends Stage implements ContactListener {
 	private void translateScreenToWorldCoordinates(int x, int y) {
 		getCamera().unproject(touchPoint.set(x, y, 0));
 	}
+
 	private void setUpLifeBox() {
-		for(int i=1; i<=healthLeft;i++){
+		for (int i = 1; i <= healthLeft; i++) {
 			addActor(new LifeBox());
 		}
-		
-	}
 
+	}
 
 	private void setUpBackground() {
 		addActor(new Background());
@@ -142,7 +142,8 @@ public class GameStage extends Stage implements ContactListener {
 	}
 
 	private void setUpBubbles() {
-		Bubble bubble = new Bubble(world, Constants.BUBBLE_FIRST_RADIUS);
+		Bubble bubble = new Bubble(world, Constants.BUBBLE_FIRST_RADIUS,
+				Constants.BUBBLE_X, Constants.BUBBLE_Y);
 		bubbles.add(bubble);
 		addActor(bubble);
 	}
@@ -180,16 +181,10 @@ public class GameStage extends Stage implements ContactListener {
 		animateBubbleShot();
 
 		if (bubble.isFirstBubble()) {
-			createSmallBubbles();
+			createSmallBubbles(bubble);
 		}
 
 		inactivateBeam();
-		destroyBubble(bubble);
-
-	}
-
-	private void destroyBubble(Bubble bubble) {
-		// TODO
 
 	}
 
@@ -199,8 +194,19 @@ public class GameStage extends Stage implements ContactListener {
 		beam.setDestroyBody(true);
 	}
 
-	private void createSmallBubbles() {
-		// TODO Auto-generated method stub
+
+	private void createSmallBubbles(Bubble bubble) {
+		float newRadius = bubble.getRadius() / 2;
+		float exX = bubble.getPosition().x;
+		float exY = bubble.getPosition().y;
+		bubble.inactivate();
+		bubbles.clear();
+		Bubble newBubble1 = new Bubble(world, newRadius, exX + newRadius, exY);
+		bubbles.add(newBubble1);
+		addActor(newBubble1);
+		Bubble newBubble2 = new Bubble(world, newRadius, exX - newRadius, exY);
+		bubbles.add(newBubble2);
+		addActor(newBubble2);
 	}
 
 	private void animateBubbleShot() {
@@ -244,28 +250,27 @@ public class GameStage extends Stage implements ContactListener {
 
 	private void setupNewTry() {
 		shooter.setGoToInitScheduled(true);
-		if(beam!= null) {
+		if (beam != null) {
 			beam.setDestroyBody(true);
 		}
-		
-		for(Bubble bubble: bubbles) {
-			bubble.setDestroyBody(true);	
+
+		for (Bubble bubble : bubbles) {
+			bubble.setDestroyBody(true);
 		}
-		
-		
+
 	}
 
 	@Override
 	public void act(float delta) {
 		super.act(delta);
 
-        // Fixed timestep
-        accumulator += delta;
+		// Fixed timestep
+		accumulator += delta;
 
-        while (accumulator >= delta) {
-            world.step(TIME_STEP, 6, 2);
-            accumulator -= TIME_STEP;
-        }
+		while (accumulator >= delta) {
+			world.step(TIME_STEP, 6, 2);
+			accumulator -= TIME_STEP;
+		}
 
 		// TODO: Implement interpolation
 

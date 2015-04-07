@@ -56,7 +56,7 @@ public abstract class GameActor extends Actor {
 		}
 	}
 
-	public void activate() {
+	public void activate(float x, float y) {
 		setVisible(true);
 	}
 	public int getID() {
@@ -77,5 +77,6 @@ public abstract class GameActor extends Actor {
 			destroyBody = false;
 		}
 	}
+
 
 }

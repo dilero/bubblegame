@@ -58,13 +58,13 @@ public class GameObjectFactory {
         return body;
     }
     
-    public Body createBubble(World world, float radius) {
+    public Body createBubble(World world, float radius, float x, float y) {
         BodyDef bodyDef = new BodyDef();
        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(new Vector2(Constants.BUBBLE_X, Constants.BUBBLE_Y));
+        bodyDef.position.set(new Vector2(x,y));
         bodyDef.gravityScale = Constants.BUBBLE_GRAVITY_SCALE;
         
-        Vector2 initVelocity = new Vector2((Constants.BUBBLE_X-2*radius), Constants.FLOOR_Y).sub(new Vector2(Constants.BUBBLE_X, Constants.BUBBLE_Y));
+        Vector2 initVelocity = new Vector2((x-2*radius), Constants.FLOOR_Y).sub(new Vector2(x, y));
         initVelocity = initVelocity.scl(1f);
         bodyDef.linearVelocity.set(initVelocity);
         

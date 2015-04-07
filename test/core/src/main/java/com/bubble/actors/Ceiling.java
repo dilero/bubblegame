@@ -10,8 +10,8 @@ public class Ceiling extends GameActor {
 	}
 
 	@Override
-	public void activate() {
-		super.activate();
+	public void activate(float x, float y) {
+		super.activate(x,y);
 		//TODO
 		
 	}

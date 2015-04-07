@@ -21,7 +21,7 @@ public class Beam extends GameActor {
 	public Beam(World world, Shooter shooter) {
 		super(world, texture);
 		this.shooter = shooter;
-		activate();
+		activate(0,0);
 		float leftCornerX = MathUtils.findLeftCornerX(body.getPosition().x,
 				Constants.BEAM_WIDTH);
 		float leftCornerY = MathUtils.findLeftCornerY(body.getPosition().y,
@@ -60,8 +60,8 @@ public class Beam extends GameActor {
 	}
 
 	@Override
-	public void activate() {
-		super.activate();
+	public void activate(float x, float y) {
+		super.activate(0,0);
 		body = GameObjectFactory.getInstance().createBeam(world, shooter);
 		body.setUserData(this);
 		
