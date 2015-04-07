@@ -32,13 +32,6 @@ public class Bubble extends GameActor {
 				Constants.BUBBLE_FIRST_RADIUS * 2);
 	}
 
-	public void jump() {
-		System.out.println("jump");
-		// bounce from ground
-		Vector2 curVelocity = body.getLinearVelocity();
-		body.setLinearVelocity(curVelocity.x, -curVelocity.y);
-
-	}
 
 	@Override
 	public BoundEnum bodyInBounds() {
@@ -57,12 +50,6 @@ public class Bubble extends GameActor {
 			Vector2 curVelocity = body.getLinearVelocity();
 			body.setLinearVelocity(-curVelocity.x, curVelocity.y);
 		}
-		float leftCornerX = MathUtils.findLeftCornerX(body.getPosition().x,
-				Constants.BUBBLE_FIRST_RADIUS*2);
-		float leftCornerY = MathUtils.findLeftCornerY(body.getPosition().y,
-				Constants.BUBBLE_FIRST_RADIUS*2);
-		textureRegionBounds.setX(leftCornerX);
-		textureRegionBounds.setY(leftCornerY);
 		super.act(delta);
 	}
 
@@ -78,6 +65,12 @@ public class Bubble extends GameActor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+		float leftCornerX = MathUtils.findLeftCornerX(body.getPosition().x,
+				Constants.BUBBLE_FIRST_RADIUS*2);
+		float leftCornerY = MathUtils.findLeftCornerY(body.getPosition().y,
+				Constants.BUBBLE_FIRST_RADIUS*2);
+		textureRegionBounds.setX(leftCornerX);
+		textureRegionBounds.setY(leftCornerY);
 		batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y,
 				Constants.BUBBLE_FIRST_RADIUS * 2,
 				Constants.BUBBLE_FIRST_RADIUS * 2);
