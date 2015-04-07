@@ -60,4 +60,5 @@ public class Constants {
 	public static final String SHOOTER_IMAGE_PATH = "shooter_image_1.bmp";
 	public static final String BEAM_IMAGE_PATH = "beam.bmp";
 	public static final String LIFE_IMAGE_PATH = "life.bmp";
+	public static final String FLOOR_IMAGE_PATH = "floor.bmp";
 }

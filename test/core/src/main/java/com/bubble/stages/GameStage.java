@@ -118,7 +118,7 @@ public class GameStage extends Stage implements ContactListener {
 	}
 	private void setUpLifeBox() {
 		for(int i=1; i<=healthLeft;i++){
-			addActor(new LifeBox(i));
+			addActor(new LifeBox());
 		}
 		
 	}
@@ -133,8 +133,8 @@ public class GameStage extends Stage implements ContactListener {
 		// Let the world now you are handling contacts
 		world.setContactListener(this);
 		setUpBackground();
-		setUpLifeBox();
 		setUpFloor();
+		setUpLifeBox();
 		setUpShooter();
 		setUpBubbles();
 	}

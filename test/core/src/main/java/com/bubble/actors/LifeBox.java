@@ -14,18 +14,7 @@ public class LifeBox extends Actor {
 	private Rectangle textureRegionBounds;
 	private static float imageX = Constants.LIFE_X;
 
-	public LifeBox(int reaminingLife) {
-		switch (reaminingLife) {
-		case 2:
-
-			break;
-		case 1:
-
-			break;
-
-		default:
-			break;
-		}
+	public LifeBox() {
 		Texture texture = new Texture(
 				Gdx.files.internal(Constants.LIFE_IMAGE_PATH));
 		textureRegion = new TextureRegion(texture);
