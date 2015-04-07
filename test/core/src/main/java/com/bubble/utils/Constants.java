@@ -51,4 +51,5 @@ public class Constants {
 	public static final short BUBBLE_GENERAL_SHOT_SCORE = 100;
 	
 	public static final String BACKGROUND_IMAGE_PATH = "background.jpg";
+	public static final String SHOOTER_IMAGE_PATH = "shooter_image_1.bmp";
 }
