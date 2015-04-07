@@ -17,10 +17,11 @@ public class Beam extends GameActor {
 	private static Texture texture = new Texture(
 			Gdx.files.internal(Constants.BEAM_IMAGE_PATH));
 
+	private Shooter shooter;
 	public Beam(World world, Shooter shooter) {
 		super(world, texture);
-		body = GameObjectFactory.getInstance().createBeam(world, shooter);
-		body.setUserData(this);
+		this.shooter = shooter;
+		activate();
 		float leftCornerX = MathUtils.findLeftCornerX(body.getPosition().x,
 				Constants.BEAM_WIDTH);
 		float leftCornerY = MathUtils.findLeftCornerY(body.getPosition().y,
@@ -50,17 +51,17 @@ public class Beam extends GameActor {
 
 	}
 
-	public boolean isDestroy() {
-		return destroy;
-	}
-
-	public void setDestroy(boolean destroy) {
-		this.destroy = destroy;
-	}
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y,
 				currentBeamWidth, currentBeamHeight);
+	}
+
+	@Override
+	public void activate() {
+		body = GameObjectFactory.getInstance().createBeam(world, shooter);
+		body.setUserData(this);
+		
 	}
 }

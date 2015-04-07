@@ -15,8 +15,7 @@ public class Floor extends GameActor {
 
 	public Floor(World world) {
 		super(world, texture);
-		body = GameObjectFactory.getInstance().createFloor(world);
-		body.setUserData(this);
+		activate();
 		float leftCornerX = MathUtils.findLeftCornerX(Constants.FLOOR_X,
 				Constants.FLOOR_WIDTH);
 		float leftCornerY = MathUtils.findLeftCornerY(Constants.FLOOR_Y,
@@ -30,5 +29,10 @@ public class Floor extends GameActor {
 		batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y,
 				Constants.FLOOR_WIDTH, Constants.FLOOR_HEIGHT);
 	}
-
+	@Override
+	public void activate() {
+		body = GameObjectFactory.getInstance().createFloor(world);
+		body.setUserData(this);
+		
+	}
 }

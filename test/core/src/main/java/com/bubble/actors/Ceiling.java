@@ -9,4 +9,9 @@ public class Ceiling extends GameActor {
 		
 	}
 
+	@Override
+	public void activate() {
+		//TODO
+		
+	}
 }

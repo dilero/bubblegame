@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -195,7 +196,7 @@ public class GameStage extends Stage implements ContactListener {
 	private void inactivateBeam() {
 		// TODO
 		Gdx.app.log("Info", " beam inactivated \n");
-		beam.setDestroy(true);
+		beam.setDestroyBody(true);
 	}
 
 	private void createSmallBubbles() {
@@ -243,6 +244,15 @@ public class GameStage extends Stage implements ContactListener {
 
 	private void setupNewTry() {
 		shooter.setGoToInitScheduled(true);
+		if(beam!= null) {
+			beam.setDestroyBody(true);
+		}
+		
+		for(Bubble bubble: bubbles) {
+			bubble.setDestroyBody(true);	
+		}
+		
+		
 	}
 
 	@Override
@@ -285,7 +295,7 @@ public class GameStage extends Stage implements ContactListener {
 
 		} else if (BodyUtils.bodyIsCeiling(a) && BodyUtils.bodyIsBeam(b)
 				|| BodyUtils.bodyIsCeiling(b) && BodyUtils.bodyIsBeam(a)) {
-			beam.setDestroy(true);
+			beam.setDestroyBody(true);
 		}
 
 	}

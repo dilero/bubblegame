@@ -16,6 +16,15 @@ public abstract class GameActor extends Actor {
 	protected Body body;
 	protected TextureRegion textureRegion;
 	protected Rectangle textureRegionBounds;
+	protected boolean destroyBody;
+
+	public boolean isDestroyBody() {
+		return destroyBody;
+	}
+
+	public void setDestroyBody(boolean destroyBody) {
+		this.destroyBody = destroyBody;
+	}
 
 	public GameActor(World world) {
 		this.world = world;
@@ -40,14 +49,12 @@ public abstract class GameActor extends Actor {
 	}
 
 	public void inactivate() {
-		body.setAwake(false);
-		setVisible(false);
+			world.destroyBody(body);
+			body = null;
+			setVisible(false);
 	}
 
-	public void activate() {
-		body.setAwake(true);
-		setVisible(true);
-	}
+	public abstract void activate();
 
 	public int getID() {
 		return id;
@@ -55,6 +62,17 @@ public abstract class GameActor extends Actor {
 
 	public BoundEnum bodyInBounds() {
 		return BoundEnum.INBOUND;
+	}
+	
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+		
+		if(destroyBody) {
+			inactivate();
+			body = null;
+			destroyBody = false;
+		}
 	}
 
 }

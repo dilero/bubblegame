@@ -1,8 +1,6 @@
 package com.bubble.actors;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
@@ -20,9 +18,8 @@ public class Bubble extends GameActor {
 
 	public Bubble(World world, float rad) {
 		super(world, texture);
-		body = GameObjectFactory.getInstance().createBubble(world, rad);
 		radius = rad;
-		body.setUserData(this);
+		activate();
 		float leftCornerX = MathUtils.findLeftCornerX(Constants.BUBBLE_X,
 				Constants.BUBBLE_FIRST_RADIUS*2);
 		float leftCornerY = MathUtils.findLeftCornerY(Constants.BUBBLE_Y,
@@ -46,7 +43,7 @@ public class Bubble extends GameActor {
 	@Override
 	public void act(float delta) {
 
-		if (!bodyInBounds().equals(BoundEnum.INBOUND)) {
+		if (body != null && !bodyInBounds().equals(BoundEnum.INBOUND)) {
 			Vector2 curVelocity = body.getLinearVelocity();
 			body.setLinearVelocity(-curVelocity.x, curVelocity.y);
 		}
@@ -76,16 +73,11 @@ public class Bubble extends GameActor {
 				Constants.BUBBLE_FIRST_RADIUS * 2);
 	}
 
-	// @Override
-	// public void draw(Batch batch, float parentAlpha) {
-	// super.draw(batch, parentAlpha);
-	// // Vector2 pos = body.getWorldCenter();
-	// // ShapeRenderer shapeRenderer= new ShapeRenderer();
-	// // shapeRenderer.begin(ShapeType.Filled);
-	// // shapeRenderer.setColor(color);
-	// // shapeRenderer.circle(pos.x, pos.y, radius);
-	// // shapeRenderer.end();
-	//
-	// }
+
+	@Override
+	public void activate() {
+		body = GameObjectFactory.getInstance().createBubble(world, radius);
+		body.setUserData(this);
+	}
 
 }

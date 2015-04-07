@@ -23,8 +23,7 @@ public class Shooter extends GameActor {
 
 	public Shooter(World world) {
 		super(world,texture);
-		body = GameObjectFactory.getInstance().createShooter(world);
-		body.setUserData(this);
+		activate();
 		float leftCornerX = MathUtils.findLeftCornerX(Constants.SHOOTER_X,
 				Constants.SHOOTER_WIDTH);
 		float leftCornerY = MathUtils.findLeftCornerY(Constants.SHOOTER_Y,
@@ -132,6 +131,13 @@ public class Shooter extends GameActor {
 
 	public void setGoToInitScheduled(boolean goToInitScheduled) {
 		this.goToInitScheduled = goToInitScheduled;
+	}
+
+	@Override
+	public void activate() {
+		body = GameObjectFactory.getInstance().createShooter(world);
+		body.setUserData(this);
+		
 	}
 
 }

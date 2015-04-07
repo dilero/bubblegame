@@ -1,6 +1,5 @@
 package com.bubble.utils;
 
-import com.badlogic.gdx.physics.box2d.Body;
 
 public class MathUtils {
 	
