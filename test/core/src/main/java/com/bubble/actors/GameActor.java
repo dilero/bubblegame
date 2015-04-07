@@ -49,9 +49,11 @@ public abstract class GameActor extends Actor {
 	}
 
 	public void inactivate() {
+		if(body != null) {
 			world.destroyBody(body);
 			body = null;
 			setVisible(false);
+		}
 	}
 
 	public void activate() {
