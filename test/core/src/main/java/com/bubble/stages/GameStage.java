@@ -19,6 +19,7 @@ import com.bubble.actors.Background;
 import com.bubble.actors.Beam;
 import com.bubble.actors.Bubble;
 import com.bubble.actors.Floor;
+import com.bubble.actors.LifeBox;
 import com.bubble.actors.Shooter;
 import com.bubble.utils.BodyUtils;
 import com.bubble.utils.Constants;
@@ -32,7 +33,7 @@ public class GameStage extends Stage implements ContactListener {
 	private ArrayList<Bubble> bubbles;
 	private Beam beam;
 
-	private short healthLeft = Constants.INIT_HEALTH;
+	private short healthLeft = Constants.INIT_HEALTH-1;
 	private int score = 0;
 
 	private final float TIME_STEP = 1 / 300f;
@@ -48,9 +49,10 @@ public class GameStage extends Stage implements ContactListener {
 	private Vector3 touchPoint;
 
 	public GameStage() {
-		super(new FitViewport( Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT,
-                new OrthographicCamera(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT)));
-        
+		super(new FitViewport(Constants.VIEWPORT_WIDTH,
+				Constants.VIEWPORT_HEIGHT, new OrthographicCamera(
+						Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT)));
+
 		bubbles = new ArrayList<Bubble>();
 		setUpWorld();
 		setupCamera();
@@ -114,16 +116,24 @@ public class GameStage extends Stage implements ContactListener {
 	private void translateScreenToWorldCoordinates(int x, int y) {
 		getCamera().unproject(touchPoint.set(x, y, 0));
 	}
+	private void setUpLifeBox() {
+		for(int i=1; i<=healthLeft;i++){
+			addActor(new LifeBox(i));
+		}
+		
+	}
+
 
 	private void setUpBackground() {
 		addActor(new Background());
 	}
-	
+
 	private void setUpWorld() {
 		world = GameObjectFactory.getInstance().createWorld();
 		// Let the world now you are handling contacts
 		world.setContactListener(this);
 		setUpBackground();
+		setUpLifeBox();
 		setUpFloor();
 		setUpShooter();
 		setUpBubbles();
@@ -184,6 +194,7 @@ public class GameStage extends Stage implements ContactListener {
 	private void inactivateBeam() {
 		// TODO
 		Gdx.app.log("Info", " beam inactivated \n");
+		beam.setDestroy(true);
 	}
 
 	private void createSmallBubbles() {
@@ -195,7 +206,7 @@ public class GameStage extends Stage implements ContactListener {
 	}
 
 	private void updateScoreBubbleShot(Bubble bubble) {
-		this.score=+bubble.getshotScore();
+		this.score = +bubble.getshotScore();
 	}
 
 	private void shooterHitByBall() {
@@ -270,6 +281,10 @@ public class GameStage extends Stage implements ContactListener {
 		} else if (BodyUtils.bodyIsBubble(a) && BodyUtils.bodyIsBeam(b)) {
 			Bubble bubble = (Bubble) a.getUserData();
 			bubbleShotByBeam(bubble);
+
+		} else if (BodyUtils.bodyIsCeiling(a) && BodyUtils.bodyIsBeam(b)
+				|| BodyUtils.bodyIsCeiling(b) && BodyUtils.bodyIsBeam(a)) {
+			beam.setDestroy(true);
 		}
 
 	}

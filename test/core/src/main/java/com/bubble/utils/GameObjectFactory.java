@@ -93,8 +93,8 @@ public class GameObjectFactory {
         bodyDef.position.set(shooter.getPosition().add(0f, Constants.SHOOTER_HEIGHT/2));
         
         bodyDef.gravityScale = Constants.BEAM_GRAVITY_SCALE;
-        bodyDef.linearVelocity.set(Constants.BEAM_VELOCITY);
-        
+//        bodyDef.linearVelocity.set(Constants.BEAM_VELOCITY);
+    
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(Constants.BEAM_WIDTH / 2, Constants.BEAM_HEIGHT / 2);
         Body body = world.createBody(bodyDef);

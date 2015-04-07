@@ -1,5 +1,8 @@
 package com.bubble.actors;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -8,41 +11,50 @@ import com.bubble.enums.BoundEnum;
 
 public abstract class GameActor extends Actor {
 	static int latestID = 0;
-    protected int id;
+	protected int id;
 	protected World world;
-    protected Body body;
+	protected Body body;
+	protected TextureRegion textureRegion;
+	protected Rectangle textureRegionBounds;
 
-    public GameActor(World world) {
-        this.world = world;
-        id = latestID;
-        latestID++;
-    }
-    
-    public boolean compareID(int id) {
-    	return this.id == id;
+	public GameActor(World world) {
+		this.world = world;
+		id = latestID;
+		latestID++;
+	}
 
-    }
- 
-   public Vector2 getPosition() {
-	   return body.getPosition();
-   }
-   
-   public void inactivate() {
-	   body.setAwake(false);
-	   setVisible(false);
-   }
-   
-   public void activate() {
-	   body.setAwake(true);
-	   setVisible(true);
-   }
-   
-   public int getID() {
-   	return id;
-   }
-   
-   public BoundEnum bodyInBounds(){
-	   return BoundEnum.INBOUND;
-   }
-   
+	public GameActor(World world, Texture texture) {
+		textureRegion = new TextureRegion(texture);
+		this.world = world;
+		id = latestID;
+		latestID++;
+	}
+
+	public boolean compareID(int id) {
+		return this.id == id;
+
+	}
+
+	public Vector2 getPosition() {
+		return body.getPosition();
+	}
+
+	public void inactivate() {
+		body.setAwake(false);
+		setVisible(false);
+	}
+
+	public void activate() {
+		body.setAwake(true);
+		setVisible(true);
+	}
+
+	public int getID() {
+		return id;
+	}
+
+	public BoundEnum bodyInBounds() {
+		return BoundEnum.INBOUND;
+	}
+
 }

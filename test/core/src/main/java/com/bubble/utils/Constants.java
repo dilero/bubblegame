@@ -12,7 +12,7 @@ public class Constants {
 	public static final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
 	
 	public static final float FLOOR_WIDTH = APP_WIDTH;
-	public static final float FLOOR_HEIGHT = APP_HEIGHT / 20;
+	public static final float FLOOR_HEIGHT = APP_HEIGHT / 15;
 	public static final float FLOOR_X = APP_WIDTH / 2;
 	public static final float FLOOR_Y = FLOOR_HEIGHT / 2;
 	public static final float FLOOR_DENSITY = 0f;
@@ -46,10 +46,18 @@ public class Constants {
 	public static final float BEAM_HEIGHT = BEAM_WIDTH * 2;
 	public static  final float BEAM_DENSITY = 0.1f;
 	public static final float BEAM_GRAVITY_SCALE = 0f;
+	public static final float BEAM_STEP_SIZE = 0.1f;
+	
+	public static final float LIFE_X = FLOOR_WIDTH/30;
+	public static final float LIFE_Y = FLOOR_HEIGHT/2;
+	public static final float LIFE_WIDTH = LIFE_Y;
+	public static final float LIFE_HEIGHT = LIFE_WIDTH;
 	
 	public static final short INIT_HEALTH = 3;
 	public static final short BUBBLE_GENERAL_SHOT_SCORE = 100;
 	
 	public static final String BACKGROUND_IMAGE_PATH = "background.jpg";
 	public static final String SHOOTER_IMAGE_PATH = "shooter_image_1.bmp";
+	public static final String BEAM_IMAGE_PATH = "beam.bmp";
+	public static final String LIFE_IMAGE_PATH = "life.bmp";
 }

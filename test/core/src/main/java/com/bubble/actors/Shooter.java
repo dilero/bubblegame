@@ -16,16 +16,14 @@ public class Shooter extends GameActor {
 	private boolean shotting;
 	private boolean leftMove = false;
 	private boolean rightMove = false;
-	private final TextureRegion textureRegion;
-	private Rectangle textureRegionBounds;
+	private static Texture texture = new Texture(
+			Gdx.files.internal(Constants.SHOOTER_IMAGE_PATH));
+
 
 	public Shooter(World world) {
-		super(world);
+		super(world,texture);
 		body = GameObjectFactory.getInstance().createShooter(world);
 		body.setUserData(this);
-		Texture texture = new Texture(
-				Gdx.files.internal(Constants.SHOOTER_IMAGE_PATH));
-		textureRegion = new TextureRegion(texture);
 		float leftCornerX = MathUtils.findLeftCornerX(Constants.SHOOTER_X,
 				Constants.SHOOTER_WIDTH);
 		float leftCornerY = MathUtils.findLeftCornerY(Constants.SHOOTER_Y,
