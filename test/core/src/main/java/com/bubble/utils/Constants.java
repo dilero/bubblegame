@@ -61,4 +61,5 @@ public class Constants {
 	public static final String BEAM_IMAGE_PATH = "beam.bmp";
 	public static final String LIFE_IMAGE_PATH = "life.bmp";
 	public static final String FLOOR_IMAGE_PATH = "floor.bmp";
+	public static final String RED_BUBBLE_IMAGE_PATH = "red_bubble.png";
 }

@@ -1,23 +1,35 @@
 package com.bubble.actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bubble.enums.BoundEnum;
 import com.bubble.utils.Constants;
 import com.bubble.utils.GameObjectFactory;
+import com.bubble.utils.MathUtils;
 
 public class Bubble extends GameActor {
 	private float radius;
+	private static Texture texture = new Texture(
+			Gdx.files.internal(Constants.RED_BUBBLE_IMAGE_PATH));
 
 	public Bubble(World world, float rad) {
-		super(world);
+		super(world, texture);
 		body = GameObjectFactory.getInstance().createBubble(world, rad);
 		radius = rad;
 		body.setUserData(this);
+		float leftCornerX = MathUtils.findLeftCornerX(Constants.BUBBLE_X,
+				Constants.BUBBLE_FIRST_RADIUS*2);
+		float leftCornerY = MathUtils.findLeftCornerY(Constants.BUBBLE_Y,
+				Constants.BUBBLE_FIRST_RADIUS*2);
+		textureRegionBounds = new Rectangle(leftCornerX, leftCornerY,
+				Constants.BUBBLE_FIRST_RADIUS * 2,
+				Constants.BUBBLE_FIRST_RADIUS * 2);
 	}
 
 	public void jump() {
@@ -45,7 +57,12 @@ public class Bubble extends GameActor {
 			Vector2 curVelocity = body.getLinearVelocity();
 			body.setLinearVelocity(-curVelocity.x, curVelocity.y);
 		}
-
+		float leftCornerX = MathUtils.findLeftCornerX(body.getPosition().x,
+				Constants.BUBBLE_FIRST_RADIUS*2);
+		float leftCornerY = MathUtils.findLeftCornerY(body.getPosition().y,
+				Constants.BUBBLE_FIRST_RADIUS*2);
+		textureRegionBounds.setX(leftCornerX);
+		textureRegionBounds.setY(leftCornerY);
 		super.act(delta);
 	}
 
@@ -61,13 +78,21 @@ public class Bubble extends GameActor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-//		Vector2 pos = body.getWorldCenter();
-//		ShapeRenderer shapeRenderer= new ShapeRenderer();
-//		shapeRenderer.begin(ShapeType.Filled);
-//		shapeRenderer.setColor(color);
-//		shapeRenderer.circle(pos.x, pos.y, radius);
-//		shapeRenderer.end();
-
+		batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y,
+				Constants.BUBBLE_FIRST_RADIUS * 2,
+				Constants.BUBBLE_FIRST_RADIUS * 2);
 	}
+
+	// @Override
+	// public void draw(Batch batch, float parentAlpha) {
+	// super.draw(batch, parentAlpha);
+	// // Vector2 pos = body.getWorldCenter();
+	// // ShapeRenderer shapeRenderer= new ShapeRenderer();
+	// // shapeRenderer.begin(ShapeType.Filled);
+	// // shapeRenderer.setColor(color);
+	// // shapeRenderer.circle(pos.x, pos.y, radius);
+	// // shapeRenderer.end();
+	//
+	// }
 
 }
