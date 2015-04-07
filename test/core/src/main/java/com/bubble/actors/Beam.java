@@ -33,6 +33,7 @@ public class Beam extends GameActor {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+		if(body != null) {
 		PolygonShape shape = (PolygonShape) body.getFixtureList().get(0)
 				.getShape();
 		if (!destroy) {
@@ -48,7 +49,7 @@ public class Beam extends GameActor {
 //			textureRegionBounds.width=currentBeamWidth;
 		}
 		body.createFixture(shape, Constants.BEAM_DENSITY);
-
+		}
 	}
 
 	@Override
