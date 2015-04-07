@@ -37,10 +37,9 @@ public class Shooter extends GameActor {
 			float lenght = delta * Constants.SHOOTER_STEP_SIZE;
 			float positionX = body.getPosition().x;
 			float newX = positionX + lenght;
-			float leftCornernewX = MathUtils.findLeftCornerX(newX ,Constants.SHOOTER_WIDTH);
 			float positionY = body.getPosition().y;
 			body.setTransform(newX, positionY, 0);
-			textureRegionBounds.setX(leftCornernewX);
+			
 		}
 	}
 
@@ -49,10 +48,8 @@ public class Shooter extends GameActor {
 			float lenght = delta * Constants.SHOOTER_STEP_SIZE;
 			float positionX = body.getPosition().x;
 			float newX = positionX - lenght;
-			float leftCornernewX = MathUtils.findLeftCornerX(newX ,Constants.SHOOTER_WIDTH);
 			float positionY = body.getPosition().y;
 			body.setTransform(newX, positionY, 0);
-			textureRegionBounds.setX(leftCornernewX);
 		}
 	}
 
@@ -79,6 +76,7 @@ public class Shooter extends GameActor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		textureRegionBounds.setX(MathUtils.findLeftCornerX(body.getPosition().x, Constants.SHOOTER_WIDTH));
 		super.draw(batch, parentAlpha);
 		batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y,
 				Constants.SHOOTER_WIDTH, Constants.SHOOTER_HEIGHT);
