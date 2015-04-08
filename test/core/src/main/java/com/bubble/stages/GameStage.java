@@ -13,15 +13,14 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bubble.actors.Background;
 import com.bubble.actors.Beam;
 import com.bubble.actors.Bubble;
 import com.bubble.actors.Floor;
 import com.bubble.actors.LifeBox;
+import com.bubble.actors.Score;
 import com.bubble.actors.Shooter;
 import com.bubble.utils.BodyUtils;
 import com.bubble.utils.Constants;
@@ -30,6 +29,7 @@ import com.bubble.utils.GameObjectFactory;
 public class GameStage extends Stage implements ContactListener {
 	private World world;
 	private Floor floor;
+	private Score scoreBox;
 
 	private Shooter shooter;
 	private ArrayList<Bubble> bubbles;
@@ -137,8 +137,15 @@ public class GameStage extends Stage implements ContactListener {
 		setUpBackground();
 		setUpFloor();
 		setUpLifeBox();
+		setUpScoreBox();
 		setUpShooter();
 		setUpBubbles();
+	}
+
+	private void setUpScoreBox() {
+		scoreBox = new Score();
+		addActor(scoreBox);
+
 	}
 
 	private void setUpBubbles() {
@@ -180,9 +187,9 @@ public class GameStage extends Stage implements ContactListener {
 		updateScoreBubbleShot(bubble);
 		animateBubbleShot();
 
-		if (bubble.isFirstBubble()) {
-			createSmallBubbles(bubble);
-		}
+//		if (bubble.isFirstBubble()) {
+//			createSmallBubbles(bubble);
+//		}
 
 		inactivateBeam();
 
@@ -194,12 +201,17 @@ public class GameStage extends Stage implements ContactListener {
 		beam.setDestroyBody(true);
 	}
 
+	private void inactivateBubble(Bubble bubble) {
+		// TODO
+		Gdx.app.log("Info", " bubble inactivated \n");
+		bubble.setDestroyBody(true);
+	}
 
 	private void createSmallBubbles(Bubble bubble) {
 		float newRadius = bubble.getRadius() / 2;
 		float exX = bubble.getPosition().x;
 		float exY = bubble.getPosition().y;
-		bubble.inactivate();
+		inactivateBubble(bubble);
 		bubbles.clear();
 		Bubble newBubble1 = new Bubble(world, newRadius, exX + newRadius, exY);
 		bubbles.add(newBubble1);
@@ -215,6 +227,7 @@ public class GameStage extends Stage implements ContactListener {
 
 	private void updateScoreBubbleShot(Bubble bubble) {
 		this.score = +bubble.getshotScore();
+		scoreBox.setScore(score);
 	}
 
 	private void shooterHitByBall() {
