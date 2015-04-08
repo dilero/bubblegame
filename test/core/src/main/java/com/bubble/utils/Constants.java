@@ -65,4 +65,8 @@ public class Constants {
 	
 	public static final float SCORE_X = (FLOOR_WIDTH*25)/30;
 	public static final float SCORE_Y = (FLOOR_HEIGHT*2)/3;
+	
+	public static final int LEFT = 21;
+	public static final int RIGHT = 22;
+	public static final int SPACE = 62;
 }

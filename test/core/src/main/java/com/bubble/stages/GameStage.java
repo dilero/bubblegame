@@ -322,6 +322,25 @@ public class GameStage extends Stage implements ContactListener {
 	}
 
 	@Override
+	public boolean keyDown(int keycode) {
+		if (keycode == Constants.LEFT) {
+			shooter.setLeftMove(true);
+		} else if (keycode == Constants.RIGHT) {
+			shooter.setRightMove(true);
+		} else if (keycode == Constants.SPACE) {
+			shootBeam();
+		}
+		return super.keyDown(keycode);
+	}
+
+	@Override
+	public boolean keyUp(int keyCode) {
+		shooter.setRightMove(false);
+		shooter.setLeftMove(false);
+		return super.keyUp(keyCode);
+	}
+
+	@Override
 	public void endContact(Contact contact) {
 
 	}
