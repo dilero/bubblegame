@@ -33,6 +33,7 @@ public class GameStage extends Stage implements ContactListener {
 
 	private Shooter shooter;
 	private ArrayList<Bubble> bubbles;
+	private ArrayList<LifeBox> lives;
 	private Beam beam;
 
 	private short healthLeft = Constants.INIT_HEALTH - 1;
@@ -54,8 +55,6 @@ public class GameStage extends Stage implements ContactListener {
 		super(new FitViewport(Constants.VIEWPORT_WIDTH,
 				Constants.VIEWPORT_HEIGHT, new OrthographicCamera(
 						Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT)));
-
-		bubbles = new ArrayList<Bubble>();
 		setUpWorld();
 		setupCamera();
 		setupTouchControlAreas();
@@ -120,8 +119,11 @@ public class GameStage extends Stage implements ContactListener {
 	}
 
 	private void setUpLifeBox() {
+		lives = new ArrayList<LifeBox>();
 		for (int i = 1; i <= healthLeft; i++) {
-			addActor(new LifeBox());
+			LifeBox lifeBox = new LifeBox();
+			lives.add(lifeBox);
+			addActor(lifeBox);
 		}
 
 	}
@@ -149,6 +151,7 @@ public class GameStage extends Stage implements ContactListener {
 	}
 
 	private void setUpBubbles() {
+		bubbles = new ArrayList<Bubble>();
 		Bubble bubble = new Bubble(world, Constants.BUBBLE_FIRST_RADIUS,
 				Constants.BUBBLE_X, Constants.BUBBLE_Y);
 		bubbles.add(bubble);
@@ -187,9 +190,9 @@ public class GameStage extends Stage implements ContactListener {
 		updateScoreBubbleShot(bubble);
 		animateBubbleShot();
 
-//		if (bubble.isFirstBubble()) {
-//			createSmallBubbles(bubble);
-//		}
+		// if (bubble.isFirstBubble()) {
+		// createSmallBubbles(bubble);
+		// }
 
 		inactivateBeam();
 
@@ -247,14 +250,14 @@ public class GameStage extends Stage implements ContactListener {
 
 	private boolean decreaseHealth() {
 		healthLeft--;
-
 		decreaseHealthGUI();
 
-		return healthLeft > 0 ? true : false;
+		return healthLeft > -1 ? true : false;
 	}
 
 	private void decreaseHealthGUI() {
-		// TODO
+		LifeBox lifeBox = lives.get(healthLeft);
+		lifeBox.remove();
 	}
 
 	private void animateGameover() {
