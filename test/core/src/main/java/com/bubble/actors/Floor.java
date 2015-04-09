@@ -14,15 +14,8 @@ public class Floor extends GameActor {
 			Gdx.files.internal(Constants.FLOOR_IMAGE_PATH));
 
 	public Floor(World world) {
-		super(world, texture);
-		
-		setX(Constants.FLOOR_X);
-		setY(Constants.FLOOR_Y);
-		setWidth(Constants.FLOOR_WIDTH);
-		setHeight(Constants.FLOOR_HEIGHT);
-		density = Constants.FLOOR_DENSITY;
-		
-		activate();
+		super(world, texture, Constants.FLOOR_X, Constants.FLOOR_Y, Constants.FLOOR_WIDTH, 
+				Constants.FLOOR_HEIGHT, Constants.FLOOR_DENSITY, true);
 		
 		float leftCornerX = MathUtils.findLeftCornerX(Constants.FLOOR_X,
 				Constants.FLOOR_WIDTH);

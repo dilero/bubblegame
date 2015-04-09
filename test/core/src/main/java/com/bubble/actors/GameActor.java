@@ -43,13 +43,26 @@ public abstract class GameActor extends Actor {
 		this.world = world;
 		id = latestID;
 		latestID++;
+
 	}
 
-	public GameActor(World world, Texture texture) {
+	public GameActor(World world, Texture texture, float x, float y, float width, float height, float density, boolean activate) {
 		textureRegion = new TextureRegion(texture);
 		this.world = world;
 		id = latestID;
 		latestID++;
+		
+		setX(x);
+		setY(y);
+		setWidth(width);
+		setHeight(height);
+		this.density = density;
+		
+		if(activate) {
+			activate();
+		}
+		
+		
 	}
 
 	public boolean compareID(int id) {

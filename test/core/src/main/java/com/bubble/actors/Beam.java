@@ -15,16 +15,8 @@ public class Beam extends GameActor {
 			Gdx.files.internal(Constants.BEAM_IMAGE_PATH));
 
 	public Beam(World world, Shooter shooter, boolean activate) {
-		super(world, texture);
-		
-		setCoordinates(shooter);
-		setWidth(Constants.BEAM_WIDTH);
-		setHeight(Constants.BEAM_HEIGHT);
-		density = Constants.BEAM_DENSITY;
-		
-		if(activate) {
-			activate();
-		}
+		super(world, texture, shooter.getPosition().x, shooter.getPosition().y+ shooter.getHeight()/2, 
+				Constants.BEAM_WIDTH, Constants.BEAM_HEIGHT, Constants.BEAM_DENSITY, activate );
 		
 		float leftCornerX = MathUtils.findLeftCornerX(body.getPosition().x,
 				Constants.BEAM_WIDTH);

@@ -17,19 +17,10 @@ public class Bubble extends GameActor {
 			Gdx.files.internal(Constants.RED_BUBBLE_IMAGE_PATH));
 
 	public Bubble(World world, float rad, float x, float y, boolean activate) {
-		super(world, texture);
+		super(world, texture, x, y, 2*rad, 2*rad, Constants.FLOOR_DENSITY, activate);
 		
 		radius = rad;
-		setX(x);
-		setY(y);
-		setWidth(radius);
-		setHeight(radius);
-		density = Constants.FLOOR_DENSITY;
-		
-		if(activate) {
-			activate();
-		}
-		
+
 		float leftCornerX = MathUtils.findLeftCornerX(x, radius * 2);
 		float leftCornerY = MathUtils.findLeftCornerY(y, radius * 2);
 		textureRegionBounds = new Rectangle(leftCornerX, leftCornerY,

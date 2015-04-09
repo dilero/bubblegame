@@ -20,15 +20,7 @@ public class Shooter extends GameActor {
 			Gdx.files.internal(Constants.SHOOTER_IMAGE_PATH));
 
 	public Shooter(World world) {
-		super(world, texture);
-		
-		setX(Constants.SHOOTER_X);
-		setY(Constants.SHOOTER_Y);
-		setWidth(Constants.SHOOTER_WIDTH);
-		setHeight(Constants.SHOOTER_HEIGHT);
-		density = Constants.SHOOTER_DENSITY;
-		
-		activate();
+		super(world, texture, Constants.SHOOTER_X, Constants.SHOOTER_Y, Constants.SHOOTER_WIDTH, Constants.SHOOTER_HEIGHT, Constants.SHOOTER_DENSITY, true);
 		
 		float leftCornerX = MathUtils.findLeftCornerX(Constants.SHOOTER_X,
 				Constants.SHOOTER_WIDTH);

@@ -89,7 +89,7 @@ public class GameObjectFactory {
         bodyDef.linearVelocity.set(initVelocity);
         
         CircleShape shape = new CircleShape();
-        shape.setRadius(radius);
+        shape.setRadius(radius/2);
         Body body = world.createBody(bodyDef);
 //        body.createFixture(shape, Constants.BUBBLE_DENSITY);
         
