@@ -241,20 +241,22 @@ public class GameStage extends Stage implements ContactListener {
 			newBubble2.activateAndApplyForce(new Vector2(-100,100));
 			
 		} else {
+			int i = 0;
 			for(Bubble bub: bubbles) {
-				int i = 0;
 				if(!bub.isFirstBubble()) {
 					if(bub.hasNoBody()) {
 						if(i == 0) {
 							bub.setX(rightBubbleX);
 							bub.setY(exY);
+							bub.activateAndApplyForce(new Vector2(100,100));
 							i++;
 						} else if(i ==1) {
 							bub.setX(leftBubbleX);
 							bub.setY(exY);
+							bub.activateAndApplyForce(new Vector2(-100,100));
 							i++;
 						}
-						bub.activateAndApplyForce(new Vector2(-100,100));
+						
 					}
 				}
 			}
