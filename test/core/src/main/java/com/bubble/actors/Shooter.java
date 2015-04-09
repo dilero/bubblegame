@@ -3,6 +3,7 @@ package com.bubble.actors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bubble.enums.BoundEnum;
@@ -16,12 +17,15 @@ public class Shooter extends GameActor {
 	private boolean moving = false;
 	private boolean leftMove = false;
 	private boolean rightMove = false;
+	private boolean firstAnimation = true;
 	private static Texture texture = new Texture(
 			Gdx.files.internal(Constants.SHOOTER_IMAGE_PATH));
 
 	public Shooter(World world) {
-		super(world, texture, Constants.SHOOTER_X, Constants.SHOOTER_Y, Constants.SHOOTER_WIDTH, Constants.SHOOTER_HEIGHT, Constants.SHOOTER_DENSITY, true);
-		
+		super(world, texture, Constants.SHOOTER_X, Constants.SHOOTER_Y,
+				Constants.SHOOTER_WIDTH, Constants.SHOOTER_HEIGHT,
+				Constants.SHOOTER_DENSITY, true);
+
 		float leftCornerX = MathUtils.findLeftCornerX(Constants.SHOOTER_X,
 				Constants.SHOOTER_WIDTH);
 		float leftCornerY = MathUtils.findLeftCornerY(Constants.SHOOTER_Y,
@@ -81,11 +85,52 @@ public class Shooter extends GameActor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		super.draw(batch, parentAlpha);
+		if (leftMove) {
+			leftMoveAnimation();
+		} else if (rightMove) {
+			rightMoveAnimation();
+		} else if (shooting) {
+			shootAnimation();
+		} else {
+			texture = new Texture(
+					Gdx.files.internal(Constants.SHOOTER_IMAGE_PATH));
+
+		}
+		textureRegion = new TextureRegion(texture);
 		textureRegionBounds.setX(MathUtils.findLeftCornerX(
 				body.getPosition().x, Constants.SHOOTER_WIDTH));
-		super.draw(batch, parentAlpha);
 		batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y,
 				Constants.SHOOTER_WIDTH, Constants.SHOOTER_HEIGHT);
+	}
+
+	private void shootAnimation() {
+		texture = new Texture(
+				Gdx.files.internal(Constants.SHOOT_IMAGE_PATH));
+	}
+
+	private void rightMoveAnimation() {
+		if (firstAnimation) {
+			texture = new Texture(
+					Gdx.files.internal(Constants.RIGHT_MOVE_1_IMAGE_PATH));
+			firstAnimation = false;
+		} else {
+			texture = new Texture(
+					Gdx.files.internal(Constants.RIGHT_MOVE_2_IMAGE_PATH));
+			firstAnimation = true;
+		}
+	}
+
+	private void leftMoveAnimation() {
+		if (firstAnimation) {
+			texture = new Texture(
+					Gdx.files.internal(Constants.LEFT_MOVE_1_IMAGE_PATH));
+			firstAnimation = false;
+		} else {
+			texture = new Texture(
+					Gdx.files.internal(Constants.LEFT_MOVE_2_IMAGE_PATH));
+			firstAnimation = true;
+		}
 	}
 
 	public boolean isShotting() {

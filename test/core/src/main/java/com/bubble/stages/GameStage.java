@@ -94,6 +94,7 @@ public class GameStage extends Stage implements ContactListener {
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		shooter.setRightMove(false);
 		shooter.setLeftMove(false);
+		shooter.setShotting(false);
 		return super.touchUp(screenX, screenY, pointer, button);
 	}
 
@@ -178,6 +179,7 @@ public class GameStage extends Stage implements ContactListener {
 	}
 
 	private void shootBeam() {	
+		shooter.setShotting(true);
 		if (beam == null) {
 			beam = new Beam(world, shooter, true);
 			addActor(beam);
@@ -383,6 +385,7 @@ public class GameStage extends Stage implements ContactListener {
 	public boolean keyUp(int keyCode) {
 		shooter.setRightMove(false);
 		shooter.setLeftMove(false);
+		shooter.setShotting(false);
 		return super.keyUp(keyCode);
 	}
 
