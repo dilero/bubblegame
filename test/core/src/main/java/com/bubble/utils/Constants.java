@@ -64,6 +64,11 @@ public class Constants {
 	public static final String LIFE_IMAGE_PATH = "life.bmp";
 	public static final String FLOOR_IMAGE_PATH = "floor.bmp";
 	public static final String RED_BUBBLE_IMAGE_PATH = "red_bubble.png";
+	public static final String LEFT_MOVE_1_IMAGE_PATH = "left_move_1.bmp";
+	public static final String LEFT_MOVE_2_IMAGE_PATH = "left_move_2.bmp";
+	public static final String RIGHT_MOVE_1_IMAGE_PATH = "right_move_1.bmp";
+	public static final String RIGHT_MOVE_2_IMAGE_PATH = "right_move_2.bmp";
+	public static final String SHOOT_IMAGE_PATH = "shoot.bmp";
 	
 	public static final float SCORE_X = (FLOOR_WIDTH*25)/30;
 	public static final float SCORE_Y = (FLOOR_HEIGHT*2)/3;
