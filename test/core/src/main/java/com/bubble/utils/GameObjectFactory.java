@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bubble.actors.Shooter;
+import com.bubble.enums.GameActorEnum;
 
 public class GameObjectFactory {
 	private static GameObjectFactory instance;
@@ -29,28 +30,47 @@ public class GameObjectFactory {
         return new World(Constants.WORLD_GRAVITY, true);
     }
 
-    public Body createFloor(World world) {
+    public Body createBody(GameActorEnum actorType, World world, float x, float y, float width, float height, float density) {
+    	switch(actorType) {
+		case BEAM:
+			return createBeam(world,x, y, width, height, density);
+		case BUBBLE:
+			return createBubble(world,x, y, width, density);
+		case CEILING:
+			return null;
+		case FLOOR:
+			return createFloor(world,x, y, width, height, density);
+		case SHOOTER:
+			return createShooter(world,x, y, width, height, density);
+		default:
+			return null;
+
+    	}
+    }
+    
+    
+    public Body createFloor(World world, float x, float y, float width, float height, float density) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(new Vector2(Constants.FLOOR_X, Constants.FLOOR_Y));
+        bodyDef.position.set(new Vector2(x, y));
         Body body = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(Constants.FLOOR_WIDTH / 2, Constants.FLOOR_HEIGHT / 2);
-        body.createFixture(shape, Constants.FLOOR_DENSITY);        
+        shape.setAsBox(width / 2, height / 2);
+        body.createFixture(shape, density);        
         shape.dispose();
         
         return body;
 
     }
     
-    public Body createShooter(World world) {
+    public Body createShooter(World world, float x, float y, float width, float height, float density) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(new Vector2(Constants.SHOOTER_X, Constants.SHOOTER_Y));
+        bodyDef.position.set(new Vector2(x, y));
         bodyDef.gravityScale = Constants.SHOOTER_GRAVITY_SCALE;
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(Constants.SHOOTER_WIDTH / 2, Constants.SHOOTER_HEIGHT / 2);
+        shape.setAsBox(width / 2, height / 2);
         Body body = world.createBody(bodyDef);
-        body.createFixture(shape, Constants.SHOOTER_DENSITY);
+        body.createFixture(shape, density);
         body.resetMassData();
         
         shape.dispose();
@@ -58,7 +78,7 @@ public class GameObjectFactory {
         return body;
     }
     
-    public Body createBubble(World world, float radius, float x, float y) {
+    public Body createBubble(World world,float x, float y, float radius, float density) {
         BodyDef bodyDef = new BodyDef();
        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(new Vector2(x,y));
@@ -75,7 +95,7 @@ public class GameObjectFactory {
         
         FixtureDef fixtureDef = new FixtureDef();  
         fixtureDef.shape = shape;  
-        fixtureDef.density = 1.0f;  
+        fixtureDef.density = density;  
         fixtureDef.friction = 0.0f;  
         fixtureDef.restitution = 1;  
         body.createFixture(fixtureDef);  
@@ -87,19 +107,19 @@ public class GameObjectFactory {
         return body;
     }
     
-    public Body createBeam(World world, Shooter shooter) {
+    public Body createBeam(World world, float x, float y, float width, float height,float density ) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(shooter.getPosition().add(0f, Constants.SHOOTER_HEIGHT/2));
+        bodyDef.position.set(x,y);
         
         bodyDef.gravityScale = Constants.BEAM_GRAVITY_SCALE;
-//        bodyDef.linearVelocity.set(Constants.BEAM_VELOCITY);
+        bodyDef.linearVelocity.set(Constants.BEAM_VELOCITY);
     
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(Constants.BEAM_WIDTH / 2, Constants.BEAM_HEIGHT / 2);
+        shape.setAsBox(width / 2, height / 2);
         Body body = world.createBody(bodyDef);
 
-        body.createFixture(shape, Constants.BEAM_DENSITY);
+        body.createFixture(shape, density);
         body.resetMassData();
         
         shape.dispose();

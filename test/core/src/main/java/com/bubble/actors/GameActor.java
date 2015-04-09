@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.bubble.enums.BoundEnum;
+import com.bubble.enums.GameActorEnum;
+import com.bubble.utils.GameObjectFactory;
 
 public abstract class GameActor extends Actor {
 	static int latestID = 0;
@@ -17,6 +19,17 @@ public abstract class GameActor extends Actor {
 	protected TextureRegion textureRegion;
 	protected Rectangle textureRegionBounds;
 	protected boolean destroyBody;
+	protected float density;
+	protected boolean goToInitScheduled = false;
+	protected boolean activationScheduled = false;
+	
+	public boolean isActivationScheduled() {
+		return activationScheduled;
+	}
+
+	public void setActivationScheduled(boolean activationScheduled) {
+		this.activationScheduled = activationScheduled;
+	}
 
 	public boolean isDestroyBody() {
 		return destroyBody;
@@ -41,23 +54,28 @@ public abstract class GameActor extends Actor {
 
 	public boolean compareID(int id) {
 		return this.id == id;
-
 	}
 
 	public Vector2 getPosition() {
 		return body.getPosition();
 	}
 
-	public void inactivate() {
+	protected void inactivate() {
 		if(body != null) {
+			setVisible(false);
 			world.destroyBody(body);
 			body = null;
-			setVisible(false);
 		}
 	}
 
-	public void activate(float x, float y) {
+	protected void activate() {
+		// overwrite this method
+	}
+	
+	protected void activate(GameActorEnum actorType) {
 		setVisible(true);
+		body = GameObjectFactory.getInstance().createBody(actorType,world, getX(), getY(), getWidth(), getHeight(), density);
+		body.setUserData(this);
 	}
 	public int getID() {
 		return id;
@@ -76,7 +94,32 @@ public abstract class GameActor extends Actor {
 			body = null;
 			destroyBody = false;
 		}
+		
+		if (goToInitScheduled) {
+			goInitPosition();
+			goToInitScheduled = false;
+		}
+		
+		if(activationScheduled) {
+			activate();
+			activationScheduled = false;
+		}
+	}
+	
+	public void goInitPosition() {
+		// Do nothing
 	}
 
+	public boolean hasNoBody() {
+		return body == null;
+	}
+
+	public boolean isGoToInitScheduled() {
+		return goToInitScheduled;
+	}
+
+	public void setGoToInitScheduled(boolean goToInitScheduled) {
+		this.goToInitScheduled = goToInitScheduled;
+	}
 
 }

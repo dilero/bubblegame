@@ -6,13 +6,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bubble.enums.BoundEnum;
+import com.bubble.enums.GameActorEnum;
 import com.bubble.utils.Constants;
-import com.bubble.utils.GameObjectFactory;
 import com.bubble.utils.MathUtils;
 
 public class Shooter extends GameActor {
 
-	private boolean goToInitScheduled = false;
 	private boolean shooting = false;
 	private boolean moving = false;
 	private boolean leftMove = false;
@@ -22,7 +21,15 @@ public class Shooter extends GameActor {
 
 	public Shooter(World world) {
 		super(world, texture);
-		activate(0, 0);
+		
+		setX(Constants.SHOOTER_X);
+		setY(Constants.SHOOTER_Y);
+		setWidth(Constants.SHOOTER_WIDTH);
+		setHeight(Constants.SHOOTER_HEIGHT);
+		density = Constants.SHOOTER_DENSITY;
+		
+		activate();
+		
 		float leftCornerX = MathUtils.findLeftCornerX(Constants.SHOOTER_X,
 				Constants.SHOOTER_WIDTH);
 		float leftCornerY = MathUtils.findLeftCornerY(Constants.SHOOTER_Y,
@@ -67,10 +74,6 @@ public class Shooter extends GameActor {
 			moveRight(delta);
 		}
 
-		if (goToInitScheduled) {
-			goInitPosition();
-			goToInitScheduled = false;
-		}
 		super.act(delta);
 	}
 
@@ -125,20 +128,8 @@ public class Shooter extends GameActor {
 		this.moving = moving;
 	}
 
-	public boolean isGoToInitScheduled() {
-		return goToInitScheduled;
-	}
-
-	public void setGoToInitScheduled(boolean goToInitScheduled) {
-		this.goToInitScheduled = goToInitScheduled;
-	}
-
-	@Override
-	public void activate(float x, float y) {
-		super.activate(x, y);
-		body = GameObjectFactory.getInstance().createShooter(world);
-		body.setUserData(this);
-
+	protected void activate() {
+		activate(GameActorEnum.SHOOTER);
 	}
 
 }

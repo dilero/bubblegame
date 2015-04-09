@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bubble.enums.BoundEnum;
+import com.bubble.enums.GameActorEnum;
 import com.bubble.utils.Constants;
-import com.bubble.utils.GameObjectFactory;
 import com.bubble.utils.MathUtils;
 
 public class Bubble extends GameActor {
@@ -16,10 +16,20 @@ public class Bubble extends GameActor {
 	private static Texture texture = new Texture(
 			Gdx.files.internal(Constants.RED_BUBBLE_IMAGE_PATH));
 
-	public Bubble(World world, float rad, float x, float y) {
+	public Bubble(World world, float rad, float x, float y, boolean activate) {
 		super(world, texture);
+		
 		radius = rad;
-		activate(x, y);
+		setX(x);
+		setY(y);
+		setWidth(radius);
+		setHeight(radius);
+		density = Constants.FLOOR_DENSITY;
+		
+		if(activate) {
+			activate();
+		}
+		
 		float leftCornerX = MathUtils.findLeftCornerX(x, radius * 2);
 		float leftCornerY = MathUtils.findLeftCornerY(y, radius * 2);
 		textureRegionBounds = new Rectangle(leftCornerX, leftCornerY,
@@ -58,22 +68,16 @@ public class Bubble extends GameActor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		float leftCornerX = MathUtils.findLeftCornerX(body.getPosition().x,
-				radius * 2);
-		float leftCornerY = MathUtils.findLeftCornerY(body.getPosition().y,
-				radius * 2);
-		textureRegionBounds.setX(leftCornerX);
-		textureRegionBounds.setY(leftCornerY);
-		batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y,
-				radius * 2, radius * 2);
-	}
-
-	@Override
-	public void activate(float x, float y) {
-		super.activate(x, y);
-		body = GameObjectFactory.getInstance()
-				.createBubble(world, radius, x, y);
-		body.setUserData(this);
+		if (body != null) {
+			float leftCornerX = MathUtils.findLeftCornerX(body.getPosition().x,
+					radius * 2);
+			float leftCornerY = MathUtils.findLeftCornerY(body.getPosition().y,
+					radius * 2);
+			textureRegionBounds.setX(leftCornerX);
+			textureRegionBounds.setY(leftCornerY);
+			batch.draw(textureRegion, textureRegionBounds.x,
+					textureRegionBounds.y, radius * 2, radius * 2);
+		}
 	}
 
 	public float getRadius() {
@@ -84,4 +88,16 @@ public class Bubble extends GameActor {
 		this.radius = radius;
 	}
 
+	public void goInitPosition() {
+		body.setTransform(Constants.BUBBLE_X, Constants.BUBBLE_Y, 0);
+		body.setAngularVelocity(0);
+        Vector2 initVelocity = new Vector2((Constants.BUBBLE_X-2*radius), Constants.FLOOR_Y).sub(new Vector2(Constants.BUBBLE_X, Constants.BUBBLE_Y));
+        initVelocity = initVelocity.scl(1f);
+		body.setLinearVelocity(initVelocity);
+	}
+	
+	protected void activate() {
+		activate(GameActorEnum.BUBBLE);
+	}
+	
 }

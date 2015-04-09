@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
+import com.bubble.enums.GameActorEnum;
 import com.bubble.utils.Constants;
-import com.bubble.utils.GameObjectFactory;
 import com.bubble.utils.MathUtils;
 
 public class Floor extends GameActor {
@@ -15,7 +15,15 @@ public class Floor extends GameActor {
 
 	public Floor(World world) {
 		super(world, texture);
-		activate(0,0);
+		
+		setX(Constants.FLOOR_X);
+		setY(Constants.FLOOR_Y);
+		setWidth(Constants.FLOOR_WIDTH);
+		setHeight(Constants.FLOOR_HEIGHT);
+		density = Constants.FLOOR_DENSITY;
+		
+		activate();
+		
 		float leftCornerX = MathUtils.findLeftCornerX(Constants.FLOOR_X,
 				Constants.FLOOR_WIDTH);
 		float leftCornerY = MathUtils.findLeftCornerY(Constants.FLOOR_Y,
@@ -29,11 +37,8 @@ public class Floor extends GameActor {
 		batch.draw(textureRegion, textureRegionBounds.x, textureRegionBounds.y,
 				Constants.FLOOR_WIDTH, Constants.FLOOR_HEIGHT);
 	}
-	@Override
-	public void activate(float x, float y) {
-		super.activate(x,y);
-		body = GameObjectFactory.getInstance().createFloor(world);
-		body.setUserData(this);
-		
+	
+	protected void activate() {
+		activate(GameActorEnum.FLOOR);
 	}
 }

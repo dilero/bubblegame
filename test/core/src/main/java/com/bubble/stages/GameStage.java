@@ -153,7 +153,7 @@ public class GameStage extends Stage implements ContactListener {
 	private void setUpBubbles() {
 		bubbles = new ArrayList<Bubble>();
 		Bubble bubble = new Bubble(world, Constants.BUBBLE_FIRST_RADIUS,
-				Constants.BUBBLE_X, Constants.BUBBLE_Y);
+				Constants.BUBBLE_X, Constants.BUBBLE_Y, true);
 		bubbles.add(bubble);
 		addActor(bubble);
 	}
@@ -176,24 +176,31 @@ public class GameStage extends Stage implements ContactListener {
 		camera.update();
 	}
 
-	private void shootBeam() {
+	private void shootBeam() {	
 		if (beam == null) {
-			beam = new Beam(world, shooter);
+			beam = new Beam(world, shooter, true);
 			addActor(beam);
+		} else if(beam.hasNoBody()) {
+			beam.setCoordinates(shooter);
+			beam.setActivationScheduled(true);
 		} else {
-
+			// Do nothing until beam is destroyed
 		}
 	}
 
 	private void bubbleShotByBeam(Bubble bubble) {
 		Gdx.app.log("Info", " bubble shot \n");
+		
 		updateScoreBubbleShot(bubble);
+		
 		animateBubbleShot();
 
-		// if (bubble.isFirstBubble()) {
-		// createSmallBubbles(bubble);
-		// }
-
+		if (bubble.isFirstBubble()) {
+		 createSmallBubbles(bubble);
+		}
+		
+		inactivateBubble(bubble);
+		
 		inactivateBeam();
 
 	}
@@ -214,14 +221,37 @@ public class GameStage extends Stage implements ContactListener {
 		float newRadius = bubble.getRadius() / 2;
 		float exX = bubble.getPosition().x;
 		float exY = bubble.getPosition().y;
-		inactivateBubble(bubble);
-		bubbles.clear();
-		Bubble newBubble1 = new Bubble(world, newRadius, exX + newRadius, exY);
-		bubbles.add(newBubble1);
-		addActor(newBubble1);
-		Bubble newBubble2 = new Bubble(world, newRadius, exX - newRadius, exY);
-		bubbles.add(newBubble2);
-		addActor(newBubble2);
+
+		if(!(bubbles.size() >1)) {
+			//TODO set velocity or apply force to small bubbles
+			Bubble newBubble1 = new Bubble(world, newRadius, exX + newRadius, exY, false);
+			bubbles.add(newBubble1);
+			addActor(newBubble1);
+			newBubble1.setActivationScheduled(true);
+			
+			Bubble newBubble2 = new Bubble(world, newRadius, exX - newRadius, exY, false);
+			bubbles.add(newBubble2);
+			addActor(newBubble2);
+			newBubble2.setActivationScheduled(true);
+		} else {
+			for(Bubble bub: bubbles) {
+				int i = 0;
+				if(!bub.isFirstBubble()) {
+					if(bub.hasNoBody()) {
+						if(i == 0) {
+							bub.setX(exX + newRadius);
+							bub.setY(exY);
+							i++;
+						} else if(i ==1) {
+							bub.setX(exX - newRadius);
+							bub.setY(exY);
+							i++;
+						}
+						bub.setActivationScheduled(true);
+					}
+				}
+			}
+		}
 	}
 
 	private void animateBubbleShot() {
@@ -250,8 +280,11 @@ public class GameStage extends Stage implements ContactListener {
 
 	private boolean decreaseHealth() {
 		healthLeft--;
-		decreaseHealthGUI();
-
+		
+		if(healthLeft > -1) {
+			decreaseHealthGUI();
+		}
+		
 		return healthLeft > -1 ? true : false;
 	}
 
@@ -271,9 +304,16 @@ public class GameStage extends Stage implements ContactListener {
 		}
 
 		for (Bubble bubble : bubbles) {
-			bubble.setDestroyBody(true);
+			if(bubble.isFirstBubble()) {
+				if(!bubble.hasNoBody()) {
+					bubble.setGoToInitScheduled(true);
+				} else {
+					bubble.setActivationScheduled(true);
+				}
+			} else {
+				bubble.setDestroyBody(true);
+			}
 		}
-
 	}
 
 	@Override
@@ -314,9 +354,6 @@ public class GameStage extends Stage implements ContactListener {
 			Bubble bubble = (Bubble) a.getUserData();
 			bubbleShotByBeam(bubble);
 
-		} else if (BodyUtils.bodyIsCeiling(a) && BodyUtils.bodyIsBeam(b)
-				|| BodyUtils.bodyIsCeiling(b) && BodyUtils.bodyIsBeam(a)) {
-			beam.setDestroyBody(true);
 		}
 
 	}
