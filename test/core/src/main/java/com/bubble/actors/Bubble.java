@@ -15,6 +15,8 @@ public class Bubble extends GameActor {
 	private float radius;
 	private static Texture texture = new Texture(
 			Gdx.files.internal(Constants.RED_BUBBLE_IMAGE_PATH));
+	
+
 
 	public Bubble(World world, float rad, float x, float y, boolean activate) {
 		super(world, texture, x, y, 2*rad, 2*rad, Constants.FLOOR_DENSITY, activate);
@@ -44,6 +46,7 @@ public class Bubble extends GameActor {
 			Vector2 curVelocity = body.getLinearVelocity();
 			body.setLinearVelocity(-curVelocity.x, curVelocity.y);
 		}
+		
 		super.act(delta);
 	}
 
@@ -89,6 +92,16 @@ public class Bubble extends GameActor {
 	
 	protected void activate() {
 		activate(GameActorEnum.BUBBLE);
+	}
+	
+	public void activateAndApplyForce(final Vector2 force) {
+	      Gdx.app.postRunnable(new Runnable() {
+	          @Override
+	          public void run() {
+	        	  activate();
+	        	  body.setLinearVelocity(force);
+	          }
+	       });
 	}
 	
 }

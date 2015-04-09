@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -217,37 +218,43 @@ public class GameStage extends Stage implements ContactListener {
 		bubble.setDestroyBody(true);
 	}
 
-	private void createSmallBubbles(Bubble bubble) {
+	private synchronized void createSmallBubbles(Bubble bubble) {
 		float newRadius = bubble.getRadius() / 2;
 		float exX = bubble.getPosition().x;
 		float exY = bubble.getPosition().y;
 
+
+		float rightBubbleX = exX + newRadius*2;
+		float leftBubbleX = exX - newRadius*2;
 		if(!(bubbles.size() >1)) {
 			//TODO set velocity or apply force to small bubbles
-			Bubble newBubble1 = new Bubble(world, newRadius, exX + newRadius, exY, false);
+			Bubble newBubble1 = new Bubble(world, newRadius, rightBubbleX, exY, false);
 			bubbles.add(newBubble1);
-			addActor(newBubble1);
-			newBubble1.setActivationScheduled(true);
+			addActor(newBubble1);		
+
+			newBubble1.activateAndApplyForce(new Vector2(100,100));
 			
-			Bubble newBubble2 = new Bubble(world, newRadius, exX - newRadius, exY, false);
+			Bubble newBubble2 = new Bubble(world, newRadius, leftBubbleX, exY, false);
 			bubbles.add(newBubble2);
 			addActor(newBubble2);
-			newBubble2.setActivationScheduled(true);
+
+			newBubble2.activateAndApplyForce(new Vector2(-100,100));
+			
 		} else {
 			for(Bubble bub: bubbles) {
 				int i = 0;
 				if(!bub.isFirstBubble()) {
 					if(bub.hasNoBody()) {
 						if(i == 0) {
-							bub.setX(exX + newRadius);
+							bub.setX(rightBubbleX);
 							bub.setY(exY);
 							i++;
 						} else if(i ==1) {
-							bub.setX(exX - newRadius);
+							bub.setX(leftBubbleX);
 							bub.setY(exY);
 							i++;
 						}
-						bub.setActivationScheduled(true);
+						bub.activateAndApplyForce(new Vector2(-100,100));
 					}
 				}
 			}

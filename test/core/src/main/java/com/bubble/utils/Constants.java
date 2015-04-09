@@ -33,15 +33,17 @@ public class Constants {
 			13f);
 	
 	public static final float BUBBLE_FIRST_RADIUS = SHOOTER_WIDTH;
-	public static final float BUBBLE_X = SHOOTER_X+SHOOTER_WIDTH*4;
+	public static final float BUBBLE_X = SHOOTER_X+SHOOTER_WIDTH*5;
 	public static final float BUBBLE_Y = SHOOTER_Y+BUBBLE_FIRST_RADIUS *4;
-	public static final Vector2 BUBBLE_JUMP_LINEAR_IMPULSE = new Vector2(
-			BUBBLE_X, SHOOTER_WIDTH);
+	public static final Vector2 LEFT_SMALL_BUBBLE_SPEED = new Vector2(-100,100);
+	public static final Vector2 RIGHT_SMALL_BUBBLE_SPEED = new Vector2(100,100);
 	public static  final float BUBBLE_DENSITY = 0.5f;
 	public static final float BUBBLE_GRAVITY_SCALE = 40f;
 	
+	
+	
 	public static final Vector2 BEAM_VELOCITY = new Vector2(
-			0, 200);
+			0, 300);
 	public static final float BEAM_WIDTH = SHOOTER_WIDTH / 5;
 	public static final float BEAM_HEIGHT = BEAM_WIDTH * 2;
 	public static  final float BEAM_DENSITY = 0.1f;
