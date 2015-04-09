@@ -41,7 +41,7 @@ public class Constants {
 	public static final float BUBBLE_GRAVITY_SCALE = 40f;
 	
 	public static final Vector2 BEAM_VELOCITY = new Vector2(
-			0, 100);
+			0, 200);
 	public static final float BEAM_WIDTH = SHOOTER_WIDTH / 5;
 	public static final float BEAM_HEIGHT = BEAM_WIDTH * 2;
 	public static  final float BEAM_DENSITY = 0.1f;
