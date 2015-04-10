@@ -19,6 +19,7 @@ import com.bubble.actors.Background;
 import com.bubble.actors.Beam;
 import com.bubble.actors.Bubble;
 import com.bubble.actors.Floor;
+import com.bubble.actors.Gameover;
 import com.bubble.actors.LifeBox;
 import com.bubble.actors.Score;
 import com.bubble.actors.Shooter;
@@ -36,9 +37,11 @@ public class GameStage extends Stage implements ContactListener {
 	private ArrayList<LifeBox> lives;
 	private Beam beam;
 
+	private Gameover gameoverActor= new Gameover();
+	
 	private short healthLeft = Constants.INIT_HEALTH - 1;
 	private int score = 0;
-
+	
 	private final float TIME_STEP = 1 / 300f;
 	private float accumulator = 0f;
 
@@ -306,7 +309,7 @@ public class GameStage extends Stage implements ContactListener {
 	}
 
 	private void animateGameover() {
-		// TODO
+		addActor(gameoverActor);
 	}
 
 	private void setupNewTry() {
@@ -341,13 +344,13 @@ public class GameStage extends Stage implements ContactListener {
 		}
 
 		// TODO: Implement interpolation
-
 	}
 
 	@Override
 	public void draw() {
 		super.draw();
 		//renderer.render(world, camera.combined);
+
 	}
 
 	@Override

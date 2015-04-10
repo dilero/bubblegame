@@ -24,7 +24,7 @@ public class Constants {
 			+ SHOOTER_HEIGHT / 2;
 	public static final float SHOOTER_GRAVITY_SCALE = 3f;
 	public static  final float SHOOTER_DENSITY = 0.5f;
-	public static final float SHOOTER_STEP_SIZE = SHOOTER_WIDTH;
+	public static final float SHOOTER_STEP_SIZE = SHOOTER_WIDTH*(2f);
 	public static final Vector2 SHOOTER_MOVE_RIGHT_LINEAR_IMPULSE = new Vector2(
 			SHOOTER_WIDTH, 0);
 	public static final Vector2 SHOOTER_MOVE_LEFT_LINEAR_IMPULSE = new Vector2(
